@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace HRMichLeo.Shared.Models
 {
-    public class HardSkills
+    public class HardSkill
     {
         public Guid Id { get; set; }
         public string DescrizioneHardSkills { get; set; } = "";

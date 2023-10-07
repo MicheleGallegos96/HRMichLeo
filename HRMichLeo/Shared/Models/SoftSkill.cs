@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace HRMichLeo.Shared.Models
 {
-    public class TipologieDocumenti 
+    public class SoftSkill 
     {
         public Guid Id { get; set; }
-        public string DescrizioneTipoDoc { get; set; } = "";
-        public bool AttivoTipoTipoDoc {  get; set; }
+        public string DescrizioneSoftSkills { get; set; } = "";
+        public bool AttivoSS {  get; set; }
     }
 }

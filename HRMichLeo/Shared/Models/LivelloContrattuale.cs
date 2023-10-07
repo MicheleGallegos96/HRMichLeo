@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace HRMichLeo.Shared.Models
 {
-    public class SoftSkills 
+    public class LivelloContrattuale 
     {
         public Guid Id { get; set; }
-        public string DescrizioneSoftSkills { get; set; } = "";
-        public bool AttivoSS {  get; set; }
+        public string DescrizioneLivelliContrattuali { get; set; } = "";
+        public bool AttivoLvlContrattuali {  get; set; }
     }
 }

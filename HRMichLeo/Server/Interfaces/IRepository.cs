@@ -2,9 +2,7 @@
 
 namespace HRMichLeo.Server.Interfaces
 {
-    public interface IRepository
+    public interface IRepository : IRepositoryBase<Sede>
     {
-        public IQueryable<Sede> Sedi { get; }
-
     }
 }
