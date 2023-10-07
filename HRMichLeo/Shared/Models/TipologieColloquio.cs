@@ -13,7 +13,7 @@ namespace HRMichLeo.Shared.Models
         public bool AttivoTipoColloquio {  get; set; }
         public DateOnly DataColloquio { get; set; }
         public Referente Referente { get; set; }
-        public Sedi SedeColloquio { get; set; }
+        public Sede SedeColloquio { get; set; }
         public DatiColloquiante Candidato { get; set; }
         public string Valutazione { get; set; } = "";
         public string Note { get; set; } = "";
