@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace HRMichLeo.Shared.Models
 {
-    public class Mansioni 
+    public class Mansione 
     {
         public Guid Id { get; set; }
         public string DescrizioneMansione { get; set; } = "";

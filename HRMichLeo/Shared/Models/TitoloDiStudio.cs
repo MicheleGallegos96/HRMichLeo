@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace HRMichLeo.Shared.Models
 {
-    public class Benefits 
+    public class TitoloDiStudi 
     {
         public Guid Id { get; set; }
-        public string DescrizioneBenefit { get; set; } = "";
-        public bool AttivoBenefit {  get; set; }
+        public string DescrizioneTitoliDiStudio { get; set; } = "";
+        public bool AttivoTitoli {  get; set; }
     }
 }
