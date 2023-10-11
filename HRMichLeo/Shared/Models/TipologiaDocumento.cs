@@ -9,7 +9,7 @@ namespace HRMichLeo.Shared.Models
     public class TipologiaDocumento 
     {
         public Guid Id { get; set; }
-        public string DescrizioneTipoDoc { get; set; } = "";
+        public string DescrizioneTipoDoc { get; set; } = null!;
         public bool AttivoTipoTipoDoc {  get; set; }
     }
 }

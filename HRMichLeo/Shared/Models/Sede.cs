@@ -9,14 +9,14 @@ namespace HRMichLeo.Shared.Models
     public class Sede
     {
         public Guid Id { get; set; }
-        public string DescrizioneSede { get; set; } = "";
-        public string Indirizzo { get; set; } = "";
+        public string DescrizioneSede { get; set; } = null!; 
+        public string? Indirizzo { get; set; } 
         public int NCivico { get; set; }
-        public string Scala { get; set; } = "";
-        public string Cap { get; set; } = "";
-        public string Provincia { get; set; } = "";
-        public string Citta { get; set; } = "";
-        public string RecapitoTel { get; set; } = "";
+        public string? Scala { get; set; } 
+        public string? Cap { get; set; } 
+        public string? Provincia { get; set; } 
+        public string? Citta { get; set; } 
+        public string? RecapitoTel { get; set; } 
         public Referente? Referente { get; set; }
     }
 }

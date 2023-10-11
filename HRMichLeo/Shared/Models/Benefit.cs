@@ -9,7 +9,7 @@ namespace HRMichLeo.Shared.Models
     public class Benefit 
     {
         public Guid Id { get; set; }
-        public string DescrizioneBenefit { get; set; } = "";
+        public string DescrizioneBenefit { get; set; } = null!;
         public bool AttivoBenefit {  get; set; }
     }
 }

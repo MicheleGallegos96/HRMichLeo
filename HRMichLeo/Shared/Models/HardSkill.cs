@@ -9,7 +9,7 @@ namespace HRMichLeo.Shared.Models
     public class HardSkill
     {
         public Guid Id { get; set; }
-        public string DescrizioneHardSkills { get; set; } = "";
+        public string DescrizioneHardSkills { get; set; } = null!;
         public bool AttivoHS { get; set; }
     }
 }

@@ -9,7 +9,7 @@ namespace HRMichLeo.Shared.Models
     public class LivelloContrattuale 
     {
         public Guid Id { get; set; }
-        public string DescrizioneLivelliContrattuali { get; set; } = "";
+        public string DescrizioneLivelliContrattuali { get; set; } = null!;
         public bool AttivoLvlContrattuali {  get; set; }
     }
 }
