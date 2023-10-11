@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,6 +12,7 @@ namespace HRMichLeo.Shared.Models
         public Guid Id { get; set; }
         public string DescrizioneTipoContratto { get; set; } = null!;
         public LivelloContrattuale? LivelloContratto { get; set; }
+        
         public DatiColloquiante? Colloquiante { get; set; }
         public bool AttivoTipoContratto { get; set; }
 

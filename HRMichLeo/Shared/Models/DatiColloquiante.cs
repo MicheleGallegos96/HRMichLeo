@@ -25,6 +25,7 @@ namespace HRMichLeo.Shared.Models
 
         public virtual ICollection<HardSkill> HardSkills { get; set; } = new List<HardSkill>();
         public virtual ICollection<SoftSkill> SoftSkills { get; set; } = new List<SoftSkill>();
+        public virtual ICollection<TipologiaColloquio> Colloqui { get; set; } = new List<TipologiaColloquio>();
 
     }
 }

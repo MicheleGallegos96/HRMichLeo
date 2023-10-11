@@ -18,7 +18,7 @@ namespace HRMichLeo.Server.Data
         public DbSet<TipologiaColloquio> TipologieColloquio { get; set; }
         public DbSet<TipologiaContratto> TipologieContratti { get; set; }
         public DbSet<TipologiaDocumento> TipologieDocumenti { get; set; }
-        public DbSet<TitoloDiStudi> TitoliDiStudio { get; set; }
+        public DbSet<TitoloDiStudio> TitoliDiStudio { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
