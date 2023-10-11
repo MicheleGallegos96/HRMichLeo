@@ -6,10 +6,17 @@ using System.Threading.Tasks;
 
 namespace HRMichLeo.Shared.Models
 {
-    public class TipologiaContratto 
+    public class TipologiaContratto
     {
         public Guid Id { get; set; }
         public string DescrizioneTipoContratto { get; set; } = null!;
-        public bool AttivoTipoContratto {  get; set; }
+        public LivelloContrattuale? LivelloContratto { get; set; }
+        public DatiColloquiante? Colloquiante { get; set; }
+        public bool AttivoTipoContratto { get; set; }
+
+
+        public virtual ICollection<EsperienzaLavorativa> EsperienzeLavorative { get; set; } = new List<EsperienzaLavorativa>();
+        public virtual ICollection<Benefit> Benefits { get; set; } = new List<Benefit>();
+        
     }
 }

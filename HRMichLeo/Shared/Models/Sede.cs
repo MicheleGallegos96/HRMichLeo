@@ -17,6 +17,7 @@ namespace HRMichLeo.Shared.Models
         public string? Provincia { get; set; } 
         public string? Citta { get; set; } 
         public string? RecapitoTel { get; set; } 
-        public Referente? Referente { get; set; }
+       
+        public ICollection<Referente> Referenti { get; set;} = new List<Referente>();
     }
 }

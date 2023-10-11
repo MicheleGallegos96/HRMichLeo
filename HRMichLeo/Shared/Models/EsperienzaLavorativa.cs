@@ -12,9 +12,9 @@ namespace HRMichLeo.Shared.Models
         public Guid Id { get; set; }
         public DateFormat DataInizio { get; set; }
         public DateFormat DataFine { get; set; }
-        public Mansione Mansione { get; set; }
+        public Mansione? Mansione { get; set; }
         public string? Azienda { get; set; }  
         public string? DescrizioneAttivitaSvolte { get; set; } 
-        public TipologiaContratto ContrattoRichiesto { get; set; }
+        public TipologiaContratto? ContrattoRichiesto { get; set; }
     }
 }

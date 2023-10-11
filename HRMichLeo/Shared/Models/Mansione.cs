@@ -11,5 +11,7 @@ namespace HRMichLeo.Shared.Models
         public Guid Id { get; set; }
         public string DescrizioneMansione { get; set; } = null!;
         public bool AttivoMansione {  get; set; }
+
+        public virtual ICollection<EsperienzaLavorativa> EsperienzeLavorative { get; set; } = new List<EsperienzaLavorativa>();
     }
 }

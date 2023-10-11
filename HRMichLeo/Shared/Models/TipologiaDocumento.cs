@@ -10,6 +10,7 @@ namespace HRMichLeo.Shared.Models
     {
         public Guid Id { get; set; }
         public string DescrizioneTipoDoc { get; set; } = null!;
-        public bool AttivoTipoTipoDoc {  get; set; }
+        public bool AttivoTipoDoc {  get; set; }
+        public DatiColloquiante? Colloquiante { get; set; }
     }
 }

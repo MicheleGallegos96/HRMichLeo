@@ -13,9 +13,9 @@ namespace HRMichLeo.Shared.Models
         public string DescrizioneTipoColloquio { get; set; } = null!;
         public bool AttivoTipoColloquio {  get; set; }
         public DateFormat DataColloquio { get; set; }
-        public Referente Referente { get; set; }
-        public Sede SedeColloquio { get; set; }
-        public DatiColloquiante Candidato { get; set; }
+        public Referente? Referente { get; set; }
+        public Sede? SedeColloquio { get; set; }
+        public DatiColloquiante? Candidato { get; set; }
         public string? Valutazione { get; set; } 
         public string? Note { get; set; } 
     }

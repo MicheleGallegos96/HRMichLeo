@@ -11,5 +11,7 @@ namespace HRMichLeo.Shared.Models
         public Guid Id { get; set; }
         public string DescrizioneHardSkills { get; set; } = null!;
         public bool AttivoHS { get; set; }
+
+        public virtual ICollection<DatiColloquiante> Colloquianti { get; set; } = new List<DatiColloquiante>();
     }
 }
