@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HRMichLeo.Server.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20231013081556_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20231013091718_intialcreate")]
+    partial class intialcreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -533,7 +533,8 @@ namespace HRMichLeo.Server.Migrations
                 {
                     b.HasOne("HRMichLeo.Shared.Models.DatiColloquiante", "Colloquiante")
                         .WithMany("Contratti")
-                        .HasForeignKey("ColloquianteId");
+                        .HasForeignKey("ColloquianteId")
+                        .OnDelete(DeleteBehavior.NoAction);
 
                     b.HasOne("HRMichLeo.Shared.Models.LivelloContrattuale", "LivelloContratto")
                         .WithMany("TipologiaContratti")

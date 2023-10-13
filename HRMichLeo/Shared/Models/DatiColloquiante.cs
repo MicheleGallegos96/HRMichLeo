@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -8,7 +9,9 @@ namespace HRMichLeo.Shared.Models
 {
     public class DatiColloquiante
     {
+       
         public Guid Id { get; set; }
+        [Required(ErrorMessage = "Il nome è un campo obbligatorio")]
         public string Nome { get; set; } = null!;
         public string Cognome { get; set; } = null!;
         public string? ComuneDiNascita { get; set; } 

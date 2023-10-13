@@ -530,7 +530,8 @@ namespace HRMichLeo.Server.Migrations
                 {
                     b.HasOne("HRMichLeo.Shared.Models.DatiColloquiante", "Colloquiante")
                         .WithMany("Contratti")
-                        .HasForeignKey("ColloquianteId");
+                        .HasForeignKey("ColloquianteId")
+                        .OnDelete(DeleteBehavior.NoAction);
 
                     b.HasOne("HRMichLeo.Shared.Models.LivelloContrattuale", "LivelloContratto")
                         .WithMany("TipologiaContratti")

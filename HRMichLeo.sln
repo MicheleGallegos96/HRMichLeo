@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.7.34024.191
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HRMichLeo.Server", "HRMichLeo\Server\HRMichLeo.Server.csproj", "{776123BB-85C3-4C53-9AB0-421959C096DD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HRMichLeo.Server", "HRMichLeo\Server\HRMichLeo.Server.csproj", "{776123BB-85C3-4C53-9AB0-421959C096DD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HRMichLeo.Client", "HRMichLeo\Client\HRMichLeo.Client.csproj", "{1444EAAE-971B-402D-8539-00B50A7779CE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HRMichLeo.Client", "HRMichLeo\Client\HRMichLeo.Client.csproj", "{1444EAAE-971B-402D-8539-00B50A7779CE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HRMichLeo.Shared", "HRMichLeo\Shared\HRMichLeo.Shared.csproj", "{34772867-7705-4E9F-955D-5428C3D70EB8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HRMichLeo.Shared", "HRMichLeo\Shared\HRMichLeo.Shared.csproj", "{34772867-7705-4E9F-955D-5428C3D70EB8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
