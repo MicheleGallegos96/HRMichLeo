@@ -23,8 +23,22 @@ namespace HRMichLeo.Server.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Sede>()
-            .HasKey(s => s.Id);
+            base.OnModelCreating(modelBuilder);
+            modelBuilder.Entity<TipologiaContratto>(entity =>
+            {
+                entity.HasOne(a => a.Colloquiante)
+                    .WithMany(a => a.Contratti)
+                    .OnDelete(DeleteBehavior.NoAction);
+                    
+
+            });
+            modelBuilder.Entity<DatiColloquiante>(entity =>
+            {
+                entity.HasOne(a => a.Documento)
+                    .WithOne(a => a.Colloquiante)
+                    .HasForeignKey<TipologiaDocumento>(a => a.Id);
+
+            });
         }
     }
 }

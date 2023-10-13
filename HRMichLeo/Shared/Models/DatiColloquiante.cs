@@ -19,10 +19,11 @@ namespace HRMichLeo.Shared.Models
         public string? StatoDiResidenza { get; set; } 
         public string? RecapitoTel { get; set; }  
         public string? Email { get; set; } 
-        public TipologiaContratto? Contratto { get; set; }
-        public TipologiaDocumento? Documento { get; set; }
-        public TitoloDiStudio? TitoloStudio { get; set; }
-
+        public virtual TipologiaContratto? Contratto { get; set; }
+        public virtual TipologiaDocumento? Documento { get; set; }
+        public virtual TitoloDiStudio? TitoloStudio { get; set; }
+        public virtual int DocumentoId { get; set; }
+        public virtual ICollection<TipologiaContratto> Contratti { get; set; } = new List<TipologiaContratto>();
         public virtual ICollection<HardSkill> HardSkills { get; set; } = new List<HardSkill>();
         public virtual ICollection<SoftSkill> SoftSkills { get; set; } = new List<SoftSkill>();
         public virtual ICollection<TipologiaColloquio> Colloqui { get; set; } = new List<TipologiaColloquio>();
