@@ -1,6 +1,8 @@
 using HRMichLeo.Server.Data;
 using HRMichLeo.Server.Interfaces;
+using HRMichLeo.Server.Interfaces.Repository;
 using HRMichLeo.Server.Models;
+using HRMichLeo.Shared.Models;
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.EntityFrameworkCore;
 
@@ -8,7 +10,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(builder.Configuration.GetValue<string>("HRMichLeoApi:ConnectionString")));
-builder.Services.AddTransient<IRepository, EfRepository>();
+builder.Services.AddTransient(typeof(IRepositoryBase<>), typeof(RepositoryBase<>));
 
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
