@@ -9,17 +9,17 @@ namespace HRMichLeo.Server.Controllers
     [ApiController]
     public class SediController : ControllerBase
     {
-        private readonly IRepositoryBase<Sede> _sedeService;
+        private readonly IRepositoryBase<Sede> _sedeRepository;
 
-        public SediController(IRepositoryBase<Sede> sediService)
+        public SediController(IRepositoryBase<Sede> sediRepository)
         {
-            _sedeService = sediService;
+            _sedeRepository = sediRepository;
         }
 
         [HttpGet]
         public async Task<ActionResult<Sede>> GetAll()
         {
-            var risultato = await _sedeService.GetAll();
+            var risultato = await _sedeRepository.GetAll();
 
             return Ok(risultato);
         }
@@ -27,22 +27,34 @@ namespace HRMichLeo.Server.Controllers
         [HttpGet("id")]
         public async Task<ActionResult<Sede>> GetById(Guid id)
         {
-            var risultato = await _sedeService.GetById(id);
+            var risultato = await _sedeRepository.GetById(id);
             return Ok(risultato);
         }
 
         [HttpPost("Add")]
-        public async Task<ActionResult<Sede>> Post(Sede Sedi)
+        public async Task<ActionResult<Sede>> Post(Sede sedi)
         {
-            await _sedeService.Create(Sedi);
-            return CreatedAtAction("GetById", new { id = Sedi.Id }, Sedi);
+            await _sedeRepository.Create(sedi);
+            return CreatedAtAction("GetById", new { id = sedi.Id }, sedi);
         }
 
         [HttpDelete("Delete")]
-        public async Task<ActionResult<Sede>> Delete(Guid Id)
+        public async Task<ActionResult<Sede>> Delete(Guid id)
         {
-            await _sedeService.Delete(Id);
+            await _sedeRepository.Delete(id);
             return Ok();
+        }
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Put(Guid id,Sede sedi)
+        {
+            if (id != sedi.Id)
+            {
+                return BadRequest();
+            }
+
+            await _sedeRepository.Update(sedi);
+
+            return Ok(sedi);
         }
     }
 }
