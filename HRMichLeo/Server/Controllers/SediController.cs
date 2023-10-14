@@ -31,7 +31,7 @@ namespace HRMichLeo.Server.Controllers
             return Ok(risultato);
         }
 
-        [HttpPost("Add")]
+        [HttpPost("Create")]
         public async Task<ActionResult<Sede>> Post(Sede sedi)
         {
             await _sedeRepository.Create(sedi);
@@ -45,7 +45,7 @@ namespace HRMichLeo.Server.Controllers
             return Ok();
         }
         [HttpPut("{id}")]
-        public async Task<IActionResult> Put(Guid id,Sede sedi)
+        public async Task<ActionResult<Sede>> Put(Guid id,Sede sedi)
         {
             if (id != sedi.Id)
             {
