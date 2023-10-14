@@ -7,11 +7,11 @@ namespace HRMichLeo.Server.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class SediController : ControllerBase
+    public class SedeController : ControllerBase
     {
         private readonly IRepositoryBase<Sede> _sedeRepository;
 
-        public SediController(IRepositoryBase<Sede> sediRepository)
+        public SedeController(IRepositoryBase<Sede> sediRepository)
         {
             _sedeRepository = sediRepository;
         }
