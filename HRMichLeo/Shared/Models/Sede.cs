@@ -18,6 +18,6 @@ namespace HRMichLeo.Shared.Models
         public string? Citta { get; set; } 
         public string? RecapitoTel { get; set; } 
        
-        public ICollection<Referente> Referenti { get; set;} = new List<Referente>();
+        public ICollection<Referente?> Referenti { get; set;} = new List<Referente>();
     }
 }
