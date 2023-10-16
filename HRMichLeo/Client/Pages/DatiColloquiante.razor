@@ -1,7 +1,9 @@
 ﻿@page "/DatiColloquiante"
+@using HRMichLeo.Shared
+@inject HttpClient Http
 <PageTitle>Dati Colloquiante</PageTitle>
 
-<form>
+<EditForm>
     <div class="mb-3">
         <label class="form-label">Nome</label>
         <input type="text" class="form-control">
@@ -54,11 +56,17 @@
 
     <button type="button" class="btn btn-success">Edit</button>
     <button type="button" class="btn btn-danger">Delete</button>
-    <button type="submit" class="btn btn-primary">Submit</button>
-</form>
+    <button type="submit" class="btn btn-primary"@onclick="OnInitializedAsync">Submit</button>
+</EditForm>
 
 
 
 @code {
-    
+    private List<DatiColloquiante> _colloquiante= new();
+
+    protected override async Task OnInitializedAsync()
+    {
+       // await Http.PutAsync("DatiColloquiante/Create",Post);
+    }
+
 }

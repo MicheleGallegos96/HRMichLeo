@@ -10,8 +10,8 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(builder.Configuration.GetValue<string>("HRMichLeoApi:ConnectionString")));
-builder.Services.AddTransient(typeof(IRepositoryBase<>), typeof(RepositoryBase<>));
-
+//builder.Services.AddTransient(typeof(IRepositoryBase<>), typeof(RepositoryBase<>));
+builder.Services.AddScoped(typeof(IRepositoryBase<>),typeof(RepositoryBase<>));
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
 builder.Services.AddSwaggerGen();
