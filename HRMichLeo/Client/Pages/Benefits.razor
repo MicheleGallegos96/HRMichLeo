@@ -1,0 +1,42 @@
+﻿@page "/Benefits"
+@inject HttpClient Http
+@using HRMichLeo.Shared.Models
+
+<PageTitle>Benefits</PageTitle>
+
+<Grid TItem="Benefit"
+      DataProvider="BenefitsDataProvider"
+      Class="table table-hover table-bordered table-striped"
+      AllowFiltering="true"
+      Responsive="true"
+      >
+    <GridColumn TItem="Benefit" HeaderText="Descrizione" PropertyName="DescrizioneBenefit">
+        @context.DescrizioneBenefit
+    </GridColumn>
+    <GridColumn TItem="Benefit" HeaderText="Attivo?" PropertyName="AttivoBenefit">
+        @context.AttivoBenefit
+    </GridColumn>
+</Grid>
+@code {
+    private IEnumerable<Benefit>? _benefits;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        
+        await GetBenefits();
+
+    }
+
+    private async Task<GridDataProviderResult<Benefit>> BenefitsDataProvider(GridDataProviderRequest<Benefit> request)
+    {
+        // if (_benefits is null)
+            _benefits = await GetBenefits();
+        return await Task.FromResult(request.ApplyTo(_benefits));
+    }
+    private async Task<IEnumerable<Benefit>> GetBenefits()
+    {
+        var result  = await Http.GetFromJsonAsync<IEnumerable<Benefit>>("api/benefit");
+        return result!;
+    }
+}
