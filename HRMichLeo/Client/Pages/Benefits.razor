@@ -7,7 +7,7 @@
 
 <PageTitle>Benefits</PageTitle>
 
-<Grid @ref="grid" TItem="Benefit"
+<Grid @ref="_grid" TItem="Benefit"
       DataProvider="BenefitsDataProvider"
       Class="table table-hover table-bordered table-striped"
       AllowFiltering="true"
@@ -92,10 +92,10 @@
     <Button Color="ButtonColor.Primary" @onclick="OnShowModalClick"> Aggiungi Nuovo </Button>
 </div>
 @code {
-    Grid<Benefit> grid;
+    Grid<Benefit>? _grid;
     private IEnumerable<Benefit>? _benefits;
     private Modal _modal = new();
-    private bool _updateModal = false;
+    private bool _updateModal=false;
     private Benefit _newBenefit { get; set; } = new();
     private Benefit _updateBenefit { get; set; } = new();
 
@@ -123,7 +123,7 @@
         if (_newBenefit!.DescrizioneBenefit != null!)
         {
             await Http.PostAsJsonAsync("api/Benefit/Create", _newBenefit);
-            await grid.RefreshDataAsync();
+            await _grid!.RefreshDataAsync();
             await OnHideModalClick();
         }
     }
@@ -138,7 +138,7 @@
     private async Task DeleteBenefit(Guid id)
     {
         await Http.DeleteAsync($"api/Benefit/{id}");
-        await grid.RefreshDataAsync();
+        await _grid!.RefreshDataAsync();
     }
 
     private async Task ShowModalUpdate(Guid id, Benefit contextBenefit)
@@ -154,7 +154,7 @@
     private async Task UpdateBenefit(Guid id)
     {
         await Http.PutAsJsonAsync($"api/Benefit/{id}", _updateBenefit);
-        await grid.RefreshDataAsync();
+        await _grid!.RefreshDataAsync();
         await _modal.HideAsync();
     }
 
