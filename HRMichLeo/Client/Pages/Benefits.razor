@@ -3,18 +3,18 @@
 @using HRMichLeo.Shared.Models
 @using System.ComponentModel
 @using System.Collections
+@using Microsoft.EntityFrameworkCore.Infrastructure
 
 <PageTitle>Benefits</PageTitle>
 
-<Grid TItem="Benefit"
+<Grid @ref="grid" TItem="Benefit"
       DataProvider="BenefitsDataProvider"
       Class="table table-hover table-bordered table-striped"
       AllowFiltering="true"
       Responsive="true"
       ItemsPerPageText="20"
       PageSizeSelectorItems="new int[]{10}"
-      PaginationItemsTextFormat="{0}"
-      >
+      PaginationItemsTextFormat="{0}" >
     <GridColumn TItem="Benefit" HeaderText="Descrizione" PropertyName="DescrizioneBenefit">
         @context.DescrizioneBenefit
     </GridColumn>
@@ -22,43 +22,83 @@
         @context.AttivoBenefit
     </GridColumn>
     <GridColumn TItem="Benefit" Filterable="false" HeaderText="Elimina" >
-        <Button Color="ButtonColor.Danger" @onclick="() => DeleteBenefit(context.Id)"> Elimina </Button>
+        <Button Color="ButtonColor.Danger" @onclick="() => DeleteBenefit(context.Id)" > Elimina </Button>
     </GridColumn>
     <GridColumn TItem="Benefit" Filterable="false" HeaderText="Modifica">
-        <Button Color="ButtonColor.Warning"> Modifica </Button>
+        <Button Color="ButtonColor.Warning" @onclick="() => ShowModalUpdate(context.Id,context)"> Modifica </Button>
     </GridColumn>
-
+    
 </Grid>
-<Modal @ref="_modal" Title="Inserisci Benefit">
+
+<Modal @ref="_modal" Title="Benefit">
 
     <BodyTemplate>
-        Inserisci un Nuovo Benefit:
-        <EditForm Model="_NewBenefit">
+        @if (!_updateModal)
+        {
+            <EditForm Model="_updateBenefit">
+                <div>
+                    <label>
+                        Modifica Descrizione:
+                        <InputText @bind-Value="_updateBenefit.DescrizioneBenefit"></InputText>
+                    </label>
+                </div>
 
-        <div><label>
-            Descrizione Benefit:
-            <InputText @bind-Value="_NewBenefit!.DescrizioneBenefit"></InputText>
-        </label></div>
-        <div><label>
-            Benefit attivo?
-            <InputCheckbox @bind-Value="_NewBenefit!.AttivoBenefit"></InputCheckbox>
+                <div>
+                    <label>
+                        Attivo?
+                        <InputCheckbox @bind-Value="_updateBenefit.AttivoBenefit"></InputCheckbox>
+                    </label>
+                </div>
+            </EditForm>
+        }
+        else
+        {
+            <EditForm Model="_newBenefit">
 
-        </label></div>
-        </EditForm>
+                <div>
+                    <label>
+                        Descrizione Benefit:
+                        <InputText @bind-Value="_newBenefit.DescrizioneBenefit"></InputText>
+                    </label>
+                </div>
+                <div>
+                    <label>
+                        Benefit attivo?
+                        <InputCheckbox @bind-Value="_newBenefit!.AttivoBenefit"></InputCheckbox>
+
+                    </label>
+                </div>
+            </EditForm>
+        }
+
 
     </BodyTemplate>
     <FooterTemplate>
-        <Button Color="ButtonColor.Secondary" @onclick="OnHideModalClick">Chiudi</Button>
-        <Button Color="ButtonColor.Success"@onclick="AddNew">Aggiungi</Button>
+        @if (!_updateModal)
+        {
+            <Button Color="ButtonColor.Secondary" @onclick="OnHideModalClick">Chiudi</Button>
+            <Button Color="ButtonColor.Warning" @onclick="() => UpdateBenefit(_updateBenefit.Id)"> Modifica </Button>
+
+        }
+        else
+        {
+            <Button Color="ButtonColor.Secondary" @onclick="OnHideModalClick">Chiudi</Button>
+            <Button Color="ButtonColor.Success" @onclick="AddNew">Aggiungi</Button>
+        }
+
     </FooterTemplate>
 </Modal>
 <div>
     <Button Color="ButtonColor.Primary" @onclick="OnShowModalClick"> Aggiungi Nuovo </Button>
 </div>
 @code {
+    Grid<Benefit> grid;
     private IEnumerable<Benefit>? _benefits;
     private Modal _modal = new();
-    private Benefit? _NewBenefit { get; set; } = new();
+    private bool _updateModal = false;
+    private Benefit _newBenefit { get; set; } = new();
+    private Benefit _updateBenefit { get; set; } = new();
+
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
@@ -67,18 +107,27 @@
     }
     private async Task OnShowModalClick()
     {
+        _updateModal = true;
         await _modal.ShowAsync();
     }
 
     private async Task OnHideModalClick()
     {
+        _updateModal = false;
         await _modal.HideAsync();
+
     }
+
     private async Task AddNew()
     {
-        await Http.PostAsJsonAsync("api/Benefit/Create",_NewBenefit);
-        await _modal.HideAsync();
+        if (_newBenefit!.DescrizioneBenefit != null!)
+        {
+            await Http.PostAsJsonAsync("api/Benefit/Create", _newBenefit);
+            await grid.RefreshDataAsync();
+            await OnHideModalClick();
+        }
     }
+
     private async Task<GridDataProviderResult<Benefit>> BenefitsDataProvider(GridDataProviderRequest<Benefit> request)
     {
         // if (_benefits is null)
@@ -89,6 +138,24 @@
     private async Task DeleteBenefit(Guid id)
     {
         await Http.DeleteAsync($"api/Benefit/{id}");
+        await grid.RefreshDataAsync();
+    }
+
+    private async Task ShowModalUpdate(Guid id, Benefit contextBenefit)
+    {
+        await _modal.ShowAsync();
+        await Http.GetFromJsonAsync<Benefit>($"api/Benefit/{id}");
+        _updateBenefit.Id = id;
+        _updateBenefit.DescrizioneBenefit = contextBenefit.DescrizioneBenefit;
+        _updateBenefit.AttivoBenefit = contextBenefit.AttivoBenefit;
+
+    }
+
+    private async Task UpdateBenefit(Guid id)
+    {
+        await Http.PutAsJsonAsync($"api/Benefit/{id}", _updateBenefit);
+        await grid.RefreshDataAsync();
+        await _modal.HideAsync();
     }
 
     private async Task<IEnumerable<Benefit>> GetBenefits()
