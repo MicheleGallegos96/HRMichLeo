@@ -30,10 +30,11 @@
 
 </Grid>
 <Modal @ref="_modal" Title="Inserisci Benefit">
-    <EditForm Model="_NewBenefit">
 
     <BodyTemplate>
         Inserisci un Nuovo Benefit:
+        <EditForm Model="_NewBenefit">
+
         <div><label>
             Descrizione Benefit:
             <InputText @bind-Value="_NewBenefit!.DescrizioneBenefit"></InputText>
@@ -43,19 +44,20 @@
             <InputCheckbox @bind-Value="_NewBenefit!.AttivoBenefit"></InputCheckbox>
 
         </label></div>
+        </EditForm>
+
     </BodyTemplate>
     <FooterTemplate>
         <Button Color="ButtonColor.Secondary" @onclick="OnHideModalClick">Chiudi</Button>
         <Button Color="ButtonColor.Success"@onclick="AddNew">Aggiungi</Button>
     </FooterTemplate>
-    </EditForm>
 </Modal>
 <div>
     <Button Color="ButtonColor.Primary" @onclick="OnShowModalClick"> Aggiungi Nuovo </Button>
 </div>
 @code {
     private IEnumerable<Benefit>? _benefits;
-    private Modal _modal = default!;
+    private Modal _modal = new();
     private Benefit? _NewBenefit { get; set; } = new();
     protected override async Task OnInitializedAsync()
     {
@@ -75,6 +77,7 @@
     private async Task AddNew()
     {
         await Http.PostAsJsonAsync("api/Benefit/Create",_NewBenefit);
+        await _modal.HideAsync();
     }
     private async Task<GridDataProviderResult<Benefit>> BenefitsDataProvider(GridDataProviderRequest<Benefit> request)
     {
