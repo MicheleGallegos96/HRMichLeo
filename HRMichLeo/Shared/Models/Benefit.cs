@@ -13,5 +13,7 @@ namespace HRMichLeo.Shared.Models
         public bool AttivoBenefit {  get; set; }
 
         public virtual ICollection<TipologiaContratto> TipologiaContratti { get; set; } = new List<TipologiaContratto>();
+
+      
     }
 }

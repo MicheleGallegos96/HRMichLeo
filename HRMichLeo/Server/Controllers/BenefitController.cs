@@ -39,7 +39,7 @@ namespace HRMichLeo.Server.Controllers
                 
         }
 
-        [HttpDelete("Delete")]
+        [HttpDelete("{id}")]
 
         public async Task<ActionResult<Benefit>> Delete(Guid id)
         {

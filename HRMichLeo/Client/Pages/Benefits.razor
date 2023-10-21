@@ -1,6 +1,8 @@
 ﻿@page "/Benefits"
 @inject HttpClient Http
 @using HRMichLeo.Shared.Models
+@using System.ComponentModel
+@using System.Collections
 
 <PageTitle>Benefits</PageTitle>
 
@@ -9,6 +11,9 @@
       Class="table table-hover table-bordered table-striped"
       AllowFiltering="true"
       Responsive="true"
+      ItemsPerPageText="20"
+      PageSizeSelectorItems="new int[]{10}"
+      PaginationItemsTextFormat="{0}"
       >
     <GridColumn TItem="Benefit" HeaderText="Descrizione" PropertyName="DescrizioneBenefit">
         @context.DescrizioneBenefit
@@ -16,27 +21,76 @@
     <GridColumn TItem="Benefit" HeaderText="Attivo?" PropertyName="AttivoBenefit">
         @context.AttivoBenefit
     </GridColumn>
+    <GridColumn TItem="Benefit" Filterable="false" HeaderText="Elimina" >
+        <Button Color="ButtonColor.Danger" @onclick="() => DeleteBenefit(context.Id)"> Elimina </Button>
+    </GridColumn>
+    <GridColumn TItem="Benefit" Filterable="false" HeaderText="Modifica">
+        <Button Color="ButtonColor.Warning"> Modifica </Button>
+    </GridColumn>
+
 </Grid>
+<Modal @ref="_modal" Title="Inserisci Benefit">
+    <EditForm Model="_NewBenefit">
+
+    <BodyTemplate>
+        Inserisci un Nuovo Benefit:
+        <div><label>
+            Descrizione Benefit:
+            <InputText @bind-Value="_NewBenefit!.DescrizioneBenefit"></InputText>
+        </label></div>
+        <div><label>
+            Benefit attivo?
+            <InputCheckbox @bind-Value="_NewBenefit!.AttivoBenefit"></InputCheckbox>
+
+        </label></div>
+    </BodyTemplate>
+    <FooterTemplate>
+        <Button Color="ButtonColor.Secondary" @onclick="OnHideModalClick">Chiudi</Button>
+        <Button Color="ButtonColor.Success"@onclick="AddNew">Aggiungi</Button>
+    </FooterTemplate>
+    </EditForm>
+</Modal>
+<div>
+    <Button Color="ButtonColor.Primary" @onclick="OnShowModalClick"> Aggiungi Nuovo </Button>
+</div>
 @code {
     private IEnumerable<Benefit>? _benefits;
-
+    private Modal _modal = default!;
+    private Benefit? _NewBenefit { get; set; } = new();
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
-        
         await GetBenefits();
 
     }
+    private async Task OnShowModalClick()
+    {
+        await _modal.ShowAsync();
+    }
 
+    private async Task OnHideModalClick()
+    {
+        await _modal.HideAsync();
+    }
+    private async Task AddNew()
+    {
+        await Http.PostAsJsonAsync("api/Benefit/Create",_NewBenefit);
+    }
     private async Task<GridDataProviderResult<Benefit>> BenefitsDataProvider(GridDataProviderRequest<Benefit> request)
     {
         // if (_benefits is null)
-            _benefits = await GetBenefits();
+        _benefits = await GetBenefits();
         return await Task.FromResult(request.ApplyTo(_benefits));
     }
+
+    private async Task DeleteBenefit(Guid id)
+    {
+        await Http.DeleteAsync($"api/Benefit/{id}");
+    }
+
     private async Task<IEnumerable<Benefit>> GetBenefits()
     {
-        var result  = await Http.GetFromJsonAsync<IEnumerable<Benefit>>("api/benefit");
+        var result = await Http.GetFromJsonAsync<IEnumerable<Benefit>>("api/benefit");
         return result!;
     }
 }
