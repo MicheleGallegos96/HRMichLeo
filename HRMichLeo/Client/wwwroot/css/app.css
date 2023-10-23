@@ -4,6 +4,10 @@ html, body {
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 
+.h1hardskill, .h1benefit {
+    text-align: center;
+}
+
 h1:focus {
     outline: none;
 }
