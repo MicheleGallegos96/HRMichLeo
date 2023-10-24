@@ -1,0 +1,169 @@
+﻿@page "/TipologiaDocumenti"
+@inject HttpClient Http
+@using HRMichLeo.Shared.Models
+@using System.ComponentModel
+@using System.Collections
+@using Microsoft.EntityFrameworkCore.Infrastructure
+
+<PageTitle>TipologiaDocumenti</PageTitle>
+<head>
+    <link rel="stylesheet" href="css/app.css" />
+</head>
+<h1 class="h1mansioni">Tipologia Documenti</h1>
+<Grid @ref="_grid" TItem="TipologiaDocumento"
+      DataProvider="TipologiaDocumentiDataProvider"
+      Class="table table-hover table-bordered table-striped"
+      AllowFiltering="true"
+      Responsive="true"
+      ItemsPerPageText="20"
+      PageSizeSelectorItems="new int[]{10}"
+      PaginationItemsTextFormat="{0}" >
+    <GridColumn TItem="TipologiaDocumento" HeaderText="Descrizione" PropertyName="DescrizioneTipologiaDocumento">
+        @context.DescrizioneTipoDoc
+    </GridColumn>
+    <GridColumn TItem="TipologiaDocumento" HeaderText="Attivo?" PropertyName="AttivoTipoDoc">
+        @context.AttivoTipoDoc
+    </GridColumn>
+    <GridColumn TItem="TipologiaDocumento" Filterable="false" HeaderText="Elimina" >
+        <Button Color="ButtonColor.Danger" @onclick="() => DeleteTipologiaDocumento(context.Id)" > Elimina </Button>
+    </GridColumn>
+    <GridColumn TItem="TipologiaDocumento" Filterable="false" HeaderText="Modifica">
+        <Button Color="ButtonColor.Success" @onclick="() => ShowModalUpdate(context.Id,context)"> Modifica </Button>
+    </GridColumn>
+    
+</Grid>
+
+<Modal @ref="_modal" Title="Tipologia Documento">
+
+    <BodyTemplate>
+        @if (!_updateModal)
+        {
+            <EditForm Model="_updateTipologiaDocumento">
+                <div>
+                    <label>
+                        Modifica Descrizione:
+                        <InputText @bind-Value="_updateTipologiaDocumento.DescrizioneTipoDoc"></InputText>
+                    </label>
+                </div>
+
+                <div>
+                    <label>
+                        Attivo?
+                        <InputCheckbox @bind-Value="_updateTipologiaDocumento.AttivoTipoDoc"></InputCheckbox>
+                    </label>
+                </div>
+            </EditForm>
+        }
+        else
+        {
+            <EditForm Model="_newTipologiaDocumento">
+
+                <div>
+                    <label>
+                        Descrizione Tipologia Documento:
+                        <InputText @bind-Value="_newTipologiaDocumento.DescrizioneTipoDoc"></InputText>
+                    </label>
+                </div>
+                <div>
+                    <label>
+                        Tipologia Documento attiva?
+                        <InputCheckbox @bind-Value="_newTipologiaDocumento!.AttivoTipoDoc"></InputCheckbox>
+
+                    </label>
+                </div>
+            </EditForm>
+        }
+
+
+    </BodyTemplate>
+    <FooterTemplate>
+        @if (!_updateModal)
+        {
+            <Button Color="ButtonColor.Secondary" @onclick="OnHideModalClick">Chiudi</Button>
+            <Button Color="ButtonColor.Warning" @onclick="() => UpdateTipologiaDocumento(_updateTipologiaDocumento.Id)"> Modifica </Button>
+
+        }
+        else
+        {
+            <Button Color="ButtonColor.Secondary" @onclick="OnHideModalClick">Chiudi</Button>
+            <Button Color="ButtonColor.Success" @onclick="AddNew">Aggiungi</Button>
+        }
+
+    </FooterTemplate>
+</Modal>
+<div>
+    <Button Color="ButtonColor.Primary" @onclick="OnShowModalClick"> Aggiungi Nuovo </Button>
+</div>
+@code {
+    Grid<TipologiaDocumento>? _grid;
+    private IEnumerable<TipologiaDocumento>? _tipologiadocumenti;
+    private Modal _modal = new();
+    private bool _updateModal=false;
+    private TipologiaDocumento _newTipologiaDocumento { get; set; } = new();
+    private TipologiaDocumento _updateTipologiaDocumento { get; set; } = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        await GetTipologiaDocumenti();
+
+    }
+    private async Task OnShowModalClick()
+    {
+        _updateModal = true;
+        await _modal.ShowAsync();
+    }
+
+    private async Task OnHideModalClick()
+    {
+        _updateModal = false;
+        await _modal.HideAsync();
+
+    }
+
+    private async Task AddNew()
+    {
+        if (_newTipologiaDocumento!.DescrizioneTipoDoc != null!)
+        {
+            await Http.PostAsJsonAsync("api/TipologiaDocumenti/Create", _newTipologiaDocumento);
+            await _grid!.RefreshDataAsync();
+            await OnHideModalClick();
+        }
+    }
+
+    private async Task<GridDataProviderResult<TipologiaDocumento>> TipologiaDocumentiDataProvider(GridDataProviderRequest<TipologiaDocumento> request)
+    {
+        // if (_mansioni is null)
+        _tipologiadocumenti = await GetTipologiaDocumenti();
+        return await Task.FromResult(request.ApplyTo(_tipologiadocumenti));
+    }
+
+    private async Task DeleteTipologiaDocumento(Guid id)
+    {
+        await Http.DeleteAsync($"api/TipologiaDocumento/{id}");
+        await _grid!.RefreshDataAsync();
+    }
+
+    private async Task ShowModalUpdate(Guid id, TipologiaDocumento contexttipologiadocumento)
+    {
+        await _modal.ShowAsync();
+        await Http.GetFromJsonAsync<TipologiaDocumento>($"api/TipologiaDocumento/{id}");
+        _updateTipologiaDocumento.Id = id;
+        _updateTipologiaDocumento.DescrizioneTipoDoc = contexttipologiadocumento.DescrizioneTipoDoc;
+        _updateTipologiaDocumento.AttivoTipoDoc = contexttipologiadocumento.AttivoTipoDoc;
+
+    }
+
+    private async Task UpdateTipologiaDocumento(Guid id)
+    {
+        await Http.PutAsJsonAsync($"api/TipologiaDocumento/{id}", _updateTipologiaDocumento);
+        await _grid!.RefreshDataAsync();
+        await _modal.HideAsync();
+    }
+
+    private async Task<IEnumerable<TipologiaDocumento>> GetTipologiaDocumenti()
+    {
+        var result = await Http.GetFromJsonAsync<IEnumerable<TipologiaDocumento>>("api/TipologiaDocumento");
+        return result!;
+    }
+}

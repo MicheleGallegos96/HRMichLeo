@@ -1,0 +1,169 @@
+﻿@page "/TitoliDiStudio"
+@inject HttpClient Http
+@using HRMichLeo.Shared.Models
+@using System.ComponentModel
+@using System.Collections
+@using Microsoft.EntityFrameworkCore.Infrastructure
+
+<PageTitle>Titoli di Studio</PageTitle>
+<head>
+    <link rel="stylesheet" href="css/app.css" />
+</head>
+<h1 class="h1benefit">Titoli di Studio</h1>
+<Grid @ref="_grid" TItem="TitoloDiStudio"
+      DataProvider="TitoliDiStudioDataProvider"
+      Class="table table-hover table-bordered table-striped"
+      AllowFiltering="true"
+      Responsive="true"
+      ItemsPerPageText="20"
+      PageSizeSelectorItems="new int[]{10}"
+      PaginationItemsTextFormat="{0}" >
+    <GridColumn TItem="TitoloDiStudio" HeaderText="Descrizione" PropertyName="DescrizioneTitoliDiStudio">
+        @context.DescrizioneTitoliDiStudio
+    </GridColumn>
+    <GridColumn TItem="TitoloDiStudio" HeaderText="Attivo?" PropertyName="AttivoTitoli">
+        @context.AttivoTitoli
+    </GridColumn>
+    <GridColumn TItem="TitoloDiStudio" Filterable="false" HeaderText="Elimina">
+        <Button Color="ButtonColor.Danger" @onclick="() => DeleteTitoloDiStudio(context.Id)" > Elimina </Button>
+    </GridColumn>
+    <GridColumn TItem="TitoloDiStudio" Filterable="false" HeaderText="Modifica">
+        <Button Color="ButtonColor.Success" @onclick="() => ShowModalUpdate(context.Id,context)"> Modifica </Button>
+    </GridColumn>
+    
+</Grid>
+
+<Modal @ref="_modal" Title="TitoloDiStudio">
+
+    <BodyTemplate>
+        @if (!_updateModal)
+        {
+            <EditForm Model="_updateTitoloDiStudio">
+                <div>
+                    <label>
+                        Modifica Descrizione:
+                        <InputText @bind-Value="_updateTitoloDiStudio.DescrizioneTitoliDiStudio"></InputText>
+                    </label>
+                </div>
+
+                <div>
+                    <label>
+                        Attivo?
+                        <InputCheckbox @bind-Value="_updateTitoloDiStudio.AttivoTitoli"></InputCheckbox>
+                    </label>
+                </div>
+            </EditForm>
+        }
+        else
+        {
+            <EditForm Model="_newTitoloDiStudio">
+
+                <div>
+                    <label>
+                        Descrizione Titolo di Studio:
+                        <InputText @bind-Value="_newTitoloDiStudio.DescrizioneTitoliDiStudio"></InputText>
+                    </label>
+                </div>
+                <div>
+                    <label>
+                        Benefit attivo?
+                        <InputCheckbox @bind-Value="_newTitoloDiStudio!.AttivoTitoli"></InputCheckbox>
+
+                    </label>
+                </div>
+            </EditForm>
+        }
+
+
+    </BodyTemplate>
+    <FooterTemplate>
+        @if (!_updateModal)
+        {
+            <Button Color="ButtonColor.Secondary" @onclick="OnHideModalClick">Chiudi</Button>
+            <Button Color="ButtonColor.Warning" @onclick="() => UpdateTitoliDiStudio(_updateTitoloDiStudio.Id)"> Modifica </Button>
+
+        }
+        else
+        {
+            <Button Color="ButtonColor.Secondary" @onclick="OnHideModalClick">Chiudi</Button>
+            <Button Color="ButtonColor.Success" @onclick="AddNew">Aggiungi</Button>
+        }
+
+    </FooterTemplate>
+</Modal>
+<div>
+    <Button Color="ButtonColor.Primary" @onclick="OnShowModalClick"> Aggiungi Nuovo </Button>
+</div>
+@code {
+    Grid<TitoloDiStudio>? _grid;
+    private IEnumerable<TitoloDiStudio>? _titolidistudio;
+    private Modal _modal = new();
+    private bool _updateModal=false;
+    private TitoloDiStudio _newTitoloDiStudio { get; set; } = new();
+    private TitoloDiStudio _updateTitoloDiStudio { get; set; } = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        await GetTitoliDiStudio();
+
+    }
+    private async Task OnShowModalClick()
+    {
+        _updateModal = true;
+        await _modal.ShowAsync();
+    }
+
+    private async Task OnHideModalClick()
+    {
+        _updateModal = false;
+        await _modal.HideAsync();
+
+    }
+
+    private async Task AddNew()
+    {
+        if (_newTitoloDiStudio!.DescrizioneTitoliDiStudio != null!)
+        {
+            await Http.PostAsJsonAsync("api/TitoloDiStudio/Create", _newTitoloDiStudio);
+            await _grid!.RefreshDataAsync();
+            await OnHideModalClick();
+        }
+    }
+
+    private async Task<GridDataProviderResult<TitoloDiStudio>> TitoliDiStudioDataProvider(GridDataProviderRequest<TitoloDiStudio> request)
+    {
+        // if (_benefits is null)
+        _titolidistudio = await GetTitoliDiStudio();
+        return await Task.FromResult(request.ApplyTo(_titolidistudio));
+    }
+
+    private async Task DeleteTitoloDiStudio(Guid id)
+    {
+        await Http.DeleteAsync($"api/TitoliDiStudio/{id}");
+        await _grid!.RefreshDataAsync();
+    }
+
+    private async Task ShowModalUpdate(Guid id, TitoloDiStudio contextTitolodistudio)
+    {
+        await _modal.ShowAsync();
+        await Http.GetFromJsonAsync<TitoloDiStudio>($"api/TitoliDiStudio/{id}");
+        _updateTitoloDiStudio.Id = id;
+        _updateTitoloDiStudio.DescrizioneTitoliDiStudio = contextTitolodistudio.DescrizioneTitoliDiStudio;
+        _updateTitoloDiStudio.AttivoTitoli = contextTitolodistudio.AttivoTitoli;
+
+    }
+
+    private async Task UpdateTitoliDiStudio(Guid id)
+    {
+        await Http.PutAsJsonAsync($"api/TitoliDiStudio/{id}", _updateTitoloDiStudio);
+        await _grid!.RefreshDataAsync();
+        await _modal.HideAsync();
+    }
+
+    private async Task<IEnumerable<TitoloDiStudio>> GetTitoliDiStudio()
+    {
+        var result = await Http.GetFromJsonAsync<IEnumerable<TitoloDiStudio>>("api/titolodistudio");
+        return result!;
+    }
+}
