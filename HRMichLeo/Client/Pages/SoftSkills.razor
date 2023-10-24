@@ -1,0 +1,169 @@
+﻿@page "/SoftSkills"
+@inject HttpClient Http
+@using HRMichLeo.Shared.Models
+@using System.ComponentModel
+@using System.Collections
+@using Microsoft.EntityFrameworkCore.Infrastructure
+
+<PageTitle>SoftSkills</PageTitle>
+<head>
+    <link rel="stylesheet" href="css/app.css"/>
+</head>
+<h1 class="h1softskills">SoftSkills</h1>
+<Grid  @ref="_grid" TItem="SoftSkill"
+      DataProvider="SoftSkillsDataProvider"
+      Class="table table-hover table-bordered table-striped"
+      AllowFiltering="true"
+      Responsive="true"
+      ItemsPerPageText="20"
+      PageSizeSelectorItems="new int[]{10}"
+      PaginationItemsTextFormat="{0}" >
+    <GridColumn TItem="SoftSkill" HeaderText="Descrizione" PropertyName="DescrizioneSoftSkills">
+        @context.DescrizioneSoftSkills
+    </GridColumn>
+    <GridColumn TItem="SoftSkill" HeaderText="Attivo?" PropertyName="AttivoSS">
+        @context.AttivoSS
+    </GridColumn>
+    <GridColumn TItem="SoftSkill" Filterable="false" HeaderText="Elimina">
+        <Button Color="ButtonColor.Danger" @onclick="() => DeleteSoftSkill(context.Id)" > Elimina </Button>
+    </GridColumn>
+    <GridColumn TItem="SoftSkill" Filterable="false" HeaderText="Modifica">
+        <Button Color="ButtonColor.Success" @onclick="() => ShowModalUpdate(context.Id,context)"> Modifica </Button>
+    </GridColumn>
+    
+</Grid>
+
+<Modal @ref="_modal" Title="SoftSkill">
+
+    <BodyTemplate>
+        @if (!_updateModal)
+        {
+            <EditForm Model="_updateSoftSkill">
+                <div>
+                    <label>
+                        Modifica Descrizione:
+                        <InputText @bind-Value="_updateSoftSkill.DescrizioneSoftSkills"></InputText>
+                    </label>
+                </div>
+
+                <div>
+                    <label>
+                        Attivo?
+                        <InputCheckbox @bind-Value="_updateSoftSkill.AttivoSS"></InputCheckbox>
+                    </label>
+                </div>
+            </EditForm>
+        }
+        else
+        {
+            <EditForm Model="_newSoftSkills">
+
+                <div>
+                    <label>
+                        Descrizione SoftSkills:
+                        <InputText @bind-Value="_newSoftSkills.DescrizioneSoftSkills"></InputText>
+                    </label>
+                </div>
+                <div>
+                    <label>
+                        SoftSkills attivo?
+                        <InputCheckbox @bind-Value="_newSoftSkills!.AttivoSS"></InputCheckbox>
+
+                    </label>
+                </div>
+            </EditForm>
+        }
+
+
+    </BodyTemplate>
+    <FooterTemplate>
+        @if (!_updateModal)
+        {
+            <Button Color="ButtonColor.Secondary" @onclick="OnHideModalClick">Chiudi</Button>
+            <Button Color="ButtonColor.Warning" @onclick="() => UpdateSoftSkill(_updateSoftSkill.Id)"> Modifica </Button>
+
+        }
+        else
+        {
+            <Button Color="ButtonColor.Secondary" @onclick="OnHideModalClick">Chiudi</Button>
+            <Button Color="ButtonColor.Success" @onclick="AddNew">Aggiungi</Button>
+        }
+
+    </FooterTemplate>
+</Modal>
+<div>
+    <Button Color="ButtonColor.Primary" @onclick="OnShowModalClick"> Aggiungi Nuovo </Button>
+</div>
+@code {
+    Grid<SoftSkill>? _grid;
+    private IEnumerable<SoftSkill>? _softskills;
+    private Modal _modal = new();
+    private bool _updateModal=false;
+    private SoftSkill _newSoftSkills { get; set; } = new();
+    private SoftSkill _updateSoftSkill { get; set; } = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        await GetSoftSkills();
+
+    }
+    private async Task OnShowModalClick()
+    {
+        _updateModal = true;
+        await _modal.ShowAsync();
+    }
+
+    private async Task OnHideModalClick()
+    {
+        _updateModal = false;
+        await _modal.HideAsync();
+
+    }
+
+    private async Task AddNew()
+    {
+        if (_newSoftSkills!.DescrizioneSoftSkills != null!)
+        {
+            await Http.PostAsJsonAsync("api/SoftSkill/Create", _newSoftSkills);
+            await _grid!.RefreshDataAsync();
+            await OnHideModalClick();
+        }
+    }
+
+    private async Task<GridDataProviderResult<SoftSkill>> SoftSkillsDataProvider(GridDataProviderRequest<SoftSkill> request)
+    {
+        // if (_benefits is null)
+        _softskills = await GetSoftSkills();
+        return await Task.FromResult(request.ApplyTo(_softskills));
+    }
+
+    private async Task DeleteSoftSkill(Guid id)
+    {
+        await Http.DeleteAsync($"api/SoftSkill/{id}");
+        await _grid!.RefreshDataAsync();
+    }
+
+    private async Task ShowModalUpdate(Guid id, SoftSkill contextsoftskill)
+    {
+        await _modal.ShowAsync();
+        await Http.GetFromJsonAsync<SoftSkill>($"api/SoftSkill/{id}");
+        _updateSoftSkill.Id = id;
+        _updateSoftSkill.DescrizioneSoftSkills = contextsoftskill.DescrizioneSoftSkills;
+        _updateSoftSkill.AttivoSS = contextsoftskill.AttivoSS;
+
+    }
+
+    private async Task UpdateSoftSkill(Guid id)
+    {
+        await Http.PutAsJsonAsync($"api/SoftSkill/{id}", _updateSoftSkill);
+        await _grid!.RefreshDataAsync();
+        await _modal.HideAsync();
+    }
+
+    private async Task<IEnumerable<SoftSkill>> GetSoftSkills()
+    {
+        var result = await Http.GetFromJsonAsync<IEnumerable<SoftSkill>>("api/softskill");
+        return result!;
+    }
+}
