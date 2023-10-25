@@ -24,14 +24,14 @@ namespace HRMichLeo.Server.Controllers
             return Ok(risultato);
         }
 
-        [HttpGet("Id")]
+        [HttpGet("{Id:guid}")]
         public async Task<ActionResult<Mansione>> GetById(Guid id)
         {
             var risultato = await _mansioneRepository.GetById(id);
             return Ok(risultato);
         }
 
-        [HttpPost("Create")]
+        [HttpPost("{id:guid}")]
 
         public async Task<ActionResult<Mansione>> Post(Mansione mansioni)
         {
@@ -40,7 +40,7 @@ namespace HRMichLeo.Server.Controllers
 
         }
 
-        [HttpDelete("Delete")]
+        [HttpDelete("{id:guid}")]
 
         public async Task<ActionResult<Mansione>> Delete(Guid id)
         {
@@ -49,7 +49,7 @@ namespace HRMichLeo.Server.Controllers
 
         }
 
-        [HttpPut("Id")]
+        [HttpPut("{Id:guid}")]
 
         public async Task<ActionResult<Mansione>> Put(Guid id, Mansione mansioni)
         {

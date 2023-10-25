@@ -23,7 +23,7 @@ namespace HRMichLeo.Server.Controllers
             return Ok(risultato);
         }
 
-        [HttpGet("Id")]
+        [HttpGet("{Id:guid}")]
         public async Task<ActionResult<HardSkill>> GetById(Guid id)
         {
             var risultato = await _hardSkillRepository.GetById(id);
@@ -39,7 +39,7 @@ namespace HRMichLeo.Server.Controllers
 
         }
 
-        [HttpDelete("Delete")]
+        [HttpDelete("{id:guid}")]
 
         public async Task<ActionResult<HardSkill>> Delete(Guid id)
         {
@@ -48,7 +48,7 @@ namespace HRMichLeo.Server.Controllers
 
         }
 
-        [HttpPut("Id")]
+        [HttpPut("{Id:guid}")]
 
         public async Task<ActionResult<HardSkill>> Put(Guid id, HardSkill hardSkills)
         {
