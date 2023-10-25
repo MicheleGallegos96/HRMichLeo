@@ -140,14 +140,14 @@
 
     private async Task DeleteTitoloDiStudio(Guid id)
     {
-        await Http.DeleteAsync($"api/TitoliDiStudio/{id}");
+        await Http.DeleteAsync($"api/TitoloDiStudio/{id}");
         await _grid!.RefreshDataAsync();
     }
 
     private async Task ShowModalUpdate(Guid id, TitoloDiStudio contextTitolodistudio)
     {
         await _modal.ShowAsync();
-        await Http.GetFromJsonAsync<TitoloDiStudio>($"api/TitoliDiStudio/{id}");
+        await Http.GetFromJsonAsync<TitoloDiStudio>($"api/TitoloDiStudio/{id}");
         _updateTitoloDiStudio.Id = id;
         _updateTitoloDiStudio.DescrizioneTitoliDiStudio = contextTitolodistudio.DescrizioneTitoliDiStudio;
         _updateTitoloDiStudio.AttivoTitoli = contextTitolodistudio.AttivoTitoli;
@@ -156,7 +156,7 @@
 
     private async Task UpdateTitoliDiStudio(Guid id)
     {
-        await Http.PutAsJsonAsync($"api/TitoliDiStudio/{id}", _updateTitoloDiStudio);
+        await Http.PutAsJsonAsync($"api/TitoloDiStudio/{id}", _updateTitoloDiStudio);
         await _grid!.RefreshDataAsync();
         await _modal.HideAsync();
     }

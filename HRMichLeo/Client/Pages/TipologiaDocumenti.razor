@@ -125,7 +125,7 @@
     {
         if (_newTipologiaDocumento!.DescrizioneTipoDoc != null!)
         {
-            await Http.PostAsJsonAsync("api/TipologiaDocumenti/Create", _newTipologiaDocumento);
+            await Http.PostAsJsonAsync("api/TipologiaDocumento/Create", _newTipologiaDocumento);
             await _grid!.RefreshDataAsync();
             await OnHideModalClick();
         }
