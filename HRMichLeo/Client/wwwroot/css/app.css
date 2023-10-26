@@ -4,12 +4,15 @@ html, body {
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 
-.h1hardskill, .h1benefit, .h1livellicontrattuali, .h1mansioni {
-    text-align: center;
-}
-.h1softskills{
+
+.h1titoli {
     text-align:center;
+    font-size: 70px;
 }
+.spantitoli {
+    color: #0502b5;
+}
+
 h1:focus {
     outline: none;
 }

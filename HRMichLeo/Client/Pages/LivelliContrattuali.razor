@@ -9,7 +9,7 @@
 <head>
     <link rel="stylesheet" href="css/app.css"/>
 </head>
-<h1 class="h1livellicontrattuali">Livelli Contrattuali</h1>
+<h1 class="h1titoli"><span class="spantitoli">L</span>ivelli <span class="spantitoli">C</span>ontrattuali</h1>
 <Grid  @ref="_grid" TItem="LivelloContrattuale"
       DataProvider="LivelliContrattualiDataProvider"
       Class="table table-hover table-bordered table-striped"
@@ -163,7 +163,7 @@
 
     private async Task<IEnumerable<LivelloContrattuale>> GetLivelliContrattuali()
     {
-        var result = await Http.GetFromJsonAsync<IEnumerable<LivelloContrattuale>>("api/livellocontrattuale");
+        var result = await Http.GetFromJsonAsync<IEnumerable<LivelloContrattuale>>("api/LivelloContrattuale");
         return result!;
     }
 }

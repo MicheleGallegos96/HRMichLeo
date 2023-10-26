@@ -21,7 +21,7 @@ namespace HRMichLeo.Server.Controllers
             return Ok(risultato);
         }
 
-        [HttpGet("Id")]
+        [HttpGet("{id:guid}")]
         public async Task<ActionResult<LivelloContrattuale>> GetById(Guid id)
         {
             var risultato = await _livelloContrattualeRepository.GetById(id);
@@ -37,7 +37,7 @@ namespace HRMichLeo.Server.Controllers
 
         }
 
-        [HttpDelete("Delete")]
+        [HttpDelete("{id:guid}")]
 
         public async Task<ActionResult<LivelloContrattuale>> Delete(Guid id)
         {
@@ -46,7 +46,7 @@ namespace HRMichLeo.Server.Controllers
 
         }
 
-        [HttpPut("Id")]
+        [HttpPut("{id:guid}")]
 
         public async Task<ActionResult<LivelloContrattuale>> Put(Guid id, LivelloContrattuale livelliContrattuale)
         {
