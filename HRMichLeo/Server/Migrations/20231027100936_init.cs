@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace HRMichLeo.Server.Migrations
 {
     /// <inheritdoc />
-    public partial class intialcreate : Migration
+    public partial class init : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -93,6 +93,19 @@ namespace HRMichLeo.Server.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_SoftSkills", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "TipologieDocumenti",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    DescrizioneTipoDoc = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    AttivoTipoDoc = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_TipologieDocumenti", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -200,12 +213,18 @@ namespace HRMichLeo.Server.Migrations
                     RecapitoTel = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ContrattoId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    TitoloStudioId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    DocumentoId = table.Column<int>(type: "int", nullable: false)
+                    TipologiaDocumentoId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    TitoloStudioId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_DatiColloquianti", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_DatiColloquianti_TipologieDocumenti_TipologiaDocumentoId",
+                        column: x => x.TipologiaDocumentoId,
+                        principalTable: "TipologieDocumenti",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_DatiColloquianti_TitoliDiStudio_TitoloStudioId",
                         column: x => x.TitoloStudioId,
@@ -273,25 +292,6 @@ namespace HRMichLeo.Server.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "TipologieDocumenti",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    DescrizioneTipoDoc = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    AttivoTipoDoc = table.Column<bool>(type: "bit", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_TipologieDocumenti", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_TipologieDocumenti_DatiColloquianti_Id",
-                        column: x => x.Id,
-                        principalTable: "DatiColloquianti",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "EsperienzeLavorative",
                 columns: table => new
                 {
@@ -337,6 +337,12 @@ namespace HRMichLeo.Server.Migrations
                 name: "IX_DatiColloquianti_ContrattoId",
                 table: "DatiColloquianti",
                 column: "ContrattoId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_DatiColloquianti_TipologiaDocumentoId",
+                table: "DatiColloquianti",
+                column: "TipologiaDocumentoId",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_DatiColloquianti_TitoloStudioId",
@@ -438,9 +444,6 @@ namespace HRMichLeo.Server.Migrations
                 name: "TipologieColloquio");
 
             migrationBuilder.DropTable(
-                name: "TipologieDocumenti");
-
-            migrationBuilder.DropTable(
                 name: "Benefits");
 
             migrationBuilder.DropTable(
@@ -466,6 +469,9 @@ namespace HRMichLeo.Server.Migrations
 
             migrationBuilder.DropTable(
                 name: "LivelliContrattuali");
+
+            migrationBuilder.DropTable(
+                name: "TipologieDocumenti");
 
             migrationBuilder.DropTable(
                 name: "TitoliDiStudio");

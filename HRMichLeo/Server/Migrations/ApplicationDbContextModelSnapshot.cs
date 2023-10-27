@@ -17,7 +17,7 @@ namespace HRMichLeo.Server.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.11")
+                .HasAnnotation("ProductVersion", "7.0.13")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -104,9 +104,6 @@ namespace HRMichLeo.Server.Migrations
                     b.Property<Guid?>("ContrattoId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("DocumentoId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Email")
                         .HasColumnType("nvarchar(max)");
 
@@ -129,12 +126,18 @@ namespace HRMichLeo.Server.Migrations
                     b.Property<string>("StatoDiResidenza")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<Guid>("TipologiaDocumentoId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<Guid?>("TitoloStudioId")
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
                     b.HasIndex("ContrattoId");
+
+                    b.HasIndex("TipologiaDocumentoId")
+                        .IsUnique();
 
                     b.HasIndex("TitoloStudioId");
 
@@ -389,6 +392,7 @@ namespace HRMichLeo.Server.Migrations
             modelBuilder.Entity("HRMichLeo.Shared.Models.TipologiaDocumento", b =>
                 {
                     b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<bool>("AttivoTipoDoc")
@@ -472,11 +476,19 @@ namespace HRMichLeo.Server.Migrations
                         .WithMany()
                         .HasForeignKey("ContrattoId");
 
+                    b.HasOne("HRMichLeo.Shared.Models.TipologiaDocumento", "Documento")
+                        .WithOne("Colloquiante")
+                        .HasForeignKey("HRMichLeo.Shared.Models.DatiColloquiante", "TipologiaDocumentoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("HRMichLeo.Shared.Models.TitoloDiStudio", "TitoloStudio")
                         .WithMany("Colloquianti")
                         .HasForeignKey("TitoloStudioId");
 
                     b.Navigation("Contratto");
+
+                    b.Navigation("Documento");
 
                     b.Navigation("TitoloStudio");
                 });
@@ -542,24 +554,11 @@ namespace HRMichLeo.Server.Migrations
                     b.Navigation("LivelloContratto");
                 });
 
-            modelBuilder.Entity("HRMichLeo.Shared.Models.TipologiaDocumento", b =>
-                {
-                    b.HasOne("HRMichLeo.Shared.Models.DatiColloquiante", "Colloquiante")
-                        .WithOne("Documento")
-                        .HasForeignKey("HRMichLeo.Shared.Models.TipologiaDocumento", "Id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Colloquiante");
-                });
-
             modelBuilder.Entity("HRMichLeo.Shared.Models.DatiColloquiante", b =>
                 {
                     b.Navigation("Colloqui");
 
                     b.Navigation("Contratti");
-
-                    b.Navigation("Documento");
                 });
 
             modelBuilder.Entity("HRMichLeo.Shared.Models.LivelloContrattuale", b =>
@@ -585,6 +584,11 @@ namespace HRMichLeo.Server.Migrations
             modelBuilder.Entity("HRMichLeo.Shared.Models.TipologiaContratto", b =>
                 {
                     b.Navigation("EsperienzeLavorative");
+                });
+
+            modelBuilder.Entity("HRMichLeo.Shared.Models.TipologiaDocumento", b =>
+                {
+                    b.Navigation("Colloquiante");
                 });
 
             modelBuilder.Entity("HRMichLeo.Shared.Models.TitoloDiStudio", b =>

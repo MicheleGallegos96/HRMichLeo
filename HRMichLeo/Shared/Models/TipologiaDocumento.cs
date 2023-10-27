@@ -11,6 +11,6 @@ namespace HRMichLeo.Shared.Models
         public Guid Id { get; set; }
         public string DescrizioneTipoDoc { get; set; } = null!;
         public bool AttivoTipoDoc {  get; set; }
-        public virtual DatiColloquiante? Colloquiante { get; set; }
+        public  DatiColloquiante? Colloquiante { get; set; }
     }
 }

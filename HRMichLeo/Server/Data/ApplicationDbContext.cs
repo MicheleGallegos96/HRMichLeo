@@ -32,13 +32,21 @@ namespace HRMichLeo.Server.Data
                     
 
             });
-            modelBuilder.Entity<DatiColloquiante>(entity =>
-            {
-                entity.HasOne(a => a.Documento)
-                    .WithOne(a => a.Colloquiante)
-                    .HasForeignKey<TipologiaDocumento>(a => a.Id);
+            //modelBuilder.Entity<DatiColloquiante>(entity =>
+            //{
+            //    entity.HasOne(a => a.Documento)
+            //        .WithOne(a => a.Colloquiante)
+            //        .HasForeignKey<TipologiaDocumento>(a => a.Id);
 
-            });
+            //});
+
+            //modelBuilder.Entity<TipologiaDocumento>(entity =>
+            //{
+            //    entity.HasOne(a => a.Colloquiante)
+            //        .WithOne(a => a.Documento)
+            //        .HasForeignKey<TipologiaDocumento>(a => a.Id);
+
+            //});
         }
     }
 }
