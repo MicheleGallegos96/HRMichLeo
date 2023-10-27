@@ -1,6 +1,5 @@
 ﻿using HRMichLeo.Server.Interfaces;
 using HRMichLeo.Shared.Models;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HRMichLeo.Server.Controllers

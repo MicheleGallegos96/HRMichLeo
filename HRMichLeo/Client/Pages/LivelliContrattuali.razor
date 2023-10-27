@@ -163,7 +163,7 @@
 
     private async Task<IEnumerable<LivelloContrattuale>> GetLivelliContrattuali()
     {
-        var result = await Http.GetFromJsonAsync<IEnumerable<LivelloContrattuale>>("api/LivelloContrattuale");
+        var result = await Http.GetFromJsonAsync<IEnumerable<LivelloContrattuale>>("api/livellocontrattuale");
         return result!;
     }
 }

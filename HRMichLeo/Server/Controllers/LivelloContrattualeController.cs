@@ -8,7 +8,6 @@ namespace HRMichLeo.Server.Controllers
     [ApiController]
     public class LivelloContrattualeController : ControllerBase
     {
-        
         private readonly IRepositoryBase<LivelloContrattuale> _livelloContrattualeRepository;
 
         public LivelloContrattualeController(IRepositoryBase<LivelloContrattuale> livelloContrattualeRepository)
