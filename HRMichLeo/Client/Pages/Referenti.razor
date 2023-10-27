@@ -1,0 +1,217 @@
+﻿@page "/Referenti"
+@inject HttpClient Http
+@using HRMichLeo.Shared.Models
+@using System.ComponentModel
+@using System.Collections
+@using Microsoft.EntityFrameworkCore.Infrastructure
+
+<PageTitle>Referenti</PageTitle>
+<head>
+    <link rel="stylesheet" href="css/app.css" />
+</head>
+<h1 class="h1titoli"><span class="spantitoli">R</span>eferenti</h1>
+<Grid @ref="_grid" TItem="Referente"
+      DataProvider="ReferentiDataProvider"
+      Class="table table-hover table-bordered table-striped"
+      AllowFiltering="true"
+      Responsive="true"
+      ItemsPerPageText="20"
+      PageSizeSelectorItems="new int[]{10}"
+      PaginationItemsTextFormat="{0}">
+    <GridColumn TItem="Referente" HeaderText="Nome" PropertyName="Nome">
+        @context.Nome
+    </GridColumn>
+    <GridColumn TItem="Referente" HeaderText="Cognome" PropertyName="Cognome">
+        @context.Cognome
+    </GridColumn>
+    <GridColumn TItem="Referente" HeaderText="Codice Fiscale" PropertyName="CF">
+        @context.CF
+    </GridColumn>
+    <GridColumn TItem="Referente" HeaderText="RecapitoTel" PropertyName="RecapitoTel">
+        @context.RecapitoTel
+    </GridColumn>
+    <GridColumn TItem="Referente" HeaderText="Email" PropertyName="Email">
+        @context.Email
+    </GridColumn>
+    <GridColumn TItem="Referente" Filterable="false" HeaderText="Elimina">
+        <Button Color="ButtonColor.Danger" @onclick="() => DeleteReferente(context.Id)"> Elimina </Button>
+    </GridColumn>
+    <GridColumn TItem="Referente" Filterable="false" HeaderText="Modifica">
+        <Button Color="ButtonColor.Success" @onclick="() => ShowModalUpdate(context.Id,context)"> Modifica </Button>
+    </GridColumn>
+
+</Grid>
+
+<Modal @ref="_modal" Title="Referente">
+
+    <BodyTemplate>
+        @if (!_updateModal)
+        {
+            <EditForm Model="_updateReferente">
+                <div>
+                    <label>
+                        Nome:
+                        <InputText @bind-Value="_updateReferente.Nome"></InputText>
+                    </label>
+                </div>
+
+                <div>
+                    <label>
+                        Cognome:
+                        <InputText @bind-Value="_updateReferente.Cognome"></InputText>
+                    </label>
+                </div>
+                <div>
+                    <label>
+                        CF:
+                        <InputText @bind-Value="_updateReferente.CF"></InputText>
+                    </label>
+                </div>
+                <div>
+                    <label>
+                        RecapitoTel:
+                        <InputText @bind-Value="_updateReferente.RecapitoTel"></InputText>
+                    </label>
+                </div>
+                <div>
+                    <label>
+                        Email:
+                        <InputText @bind-Value="_updateReferente.Email"></InputText>
+                    </label>
+                </div>
+            </EditForm>
+        }
+        else
+        {
+            <EditForm Model="_newReferente">
+
+                <div>
+                    <label>
+                        Nome:
+                        <InputText @bind-Value="_newReferente.Nome"></InputText>
+                    </label>
+                </div>
+                <div>
+                    <label>
+                        Cognome:
+                        <InputText @bind-Value="_newReferente.Cognome"></InputText>
+                    </label>
+                </div>
+                <div>
+                    <label>
+                        CF:
+                        <InputText @bind-Value="_newReferente.CF"></InputText>
+                    </label>
+                </div>
+                <div>
+                    <label>
+                        RecapitoTel:
+                        <InputText @bind-Value="_newReferente.RecapitoTel"></InputText>
+                    </label>
+                </div>
+                <div>
+                    <label>
+                        Email:
+                        <InputText @bind-Value="_newReferente.Email"></InputText>
+                    </label>
+                </div>
+            </EditForm>
+        }
+
+
+    </BodyTemplate>
+    <FooterTemplate>
+        @if (!_updateModal)
+        {
+            <Button Color="ButtonColor.Secondary" @onclick="OnHideModalClick">Chiudi</Button>
+            <Button Color="ButtonColor.Warning" @onclick="() => UpdateReferente(_updateReferente.Id)"> Modifica </Button>
+
+        }
+        else
+        {
+            <Button Color="ButtonColor.Secondary" @onclick="OnHideModalClick">Chiudi</Button>
+            <Button Color="ButtonColor.Success" @onclick="AddNew">Aggiungi</Button>
+        }
+
+    </FooterTemplate>
+</Modal>
+<div>
+    <Button Color="ButtonColor.Primary" @onclick="OnShowModalClick"> Aggiungi Nuovo </Button>
+</div>
+@code {
+    Grid<Referente>? _grid;
+    private IEnumerable<Referente>? _referenti;
+    private Modal _modal = new();
+    private bool _updateModal = false;
+    private Referente _newReferente { get; set; } = new();
+    private Referente _updateReferente { get; set; } = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        await GetReferenti();
+
+    }
+    private async Task OnShowModalClick()
+    {
+        _updateModal = true;
+        await _modal.ShowAsync();
+    }
+
+    private async Task OnHideModalClick()
+    {
+        _updateModal = false;
+        await _modal.HideAsync();
+
+    }
+
+    private async Task AddNew()
+    {
+        if (_newReferente!.Nome != null!)
+        {
+            await Http.PostAsJsonAsync("api/Referente/Create", _newReferente);
+            await _grid!.RefreshDataAsync();
+            await OnHideModalClick();
+        }
+    }
+
+    private async Task<GridDataProviderResult<Referente>> ReferentiDataProvider(GridDataProviderRequest<Referente> request)
+    {
+        // if (_benefits is null)
+        _referenti = await GetReferenti();
+        return await Task.FromResult(request.ApplyTo(_referenti));
+    }
+
+    private async Task DeleteReferente(Guid id)
+    {
+        await Http.DeleteAsync($"api/Referente/{id}");
+        await _grid!.RefreshDataAsync();
+    }
+
+    private async Task ShowModalUpdate(Guid id, Referente contexReferente)
+    {
+        await _modal.ShowAsync();
+        await Http.GetFromJsonAsync<Referente>($"api/Referente/{id}");
+        _updateReferente.Id = id;
+        _updateReferente.Nome = contexReferente.Nome;
+        _updateReferente.Cognome = contexReferente.Cognome;
+        _updateReferente.CF = contexReferente.CF;
+        _updateReferente.RecapitoTel = contexReferente.RecapitoTel;
+        _updateReferente.Email = contexReferente.Email;
+
+
+    }
+
+    private async Task UpdateReferente(Guid id)
+    {
+        await Http.PutAsJsonAsync($"api/Referente/{id}", _updateReferente);
+        await _grid!.RefreshDataAsync();
+        await _modal.HideAsync();
+    }
+
+    private async Task<IEnumerable<Referente>> GetReferenti()
+    {
+        var result = await Http.GetFromJsonAsync<IEnumerable<Referente>>("api/Referente");
+        return result!;
+    }
+}

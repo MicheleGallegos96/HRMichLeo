@@ -1,0 +1,286 @@
+﻿@page "/AnagraficaSedi"
+@inject HttpClient Http
+@using HRMichLeo.Shared.Models
+@using System.ComponentModel
+@using System.Collections
+@using Microsoft.EntityFrameworkCore.Infrastructure
+
+<PageTitle>Anagrafica Sedi</PageTitle>
+<head>
+    <link rel="stylesheet" href="css/app.css" />
+</head>
+<h1 class="h1titoli"><span class="spantitoli">A</span>nagrafica <span class="spantitoli">S</span>edi</h1>
+<Grid @ref="_grid" TItem="Sede"
+      DataProvider="SediDataProvider"
+      Class="table table-hover table-bordered table-striped"
+      AllowFiltering="true"
+      Responsive="true"
+      ItemsPerPageText="20"
+      PageSizeSelectorItems="new int[]{10}"
+      PaginationItemsTextFormat="{0}">
+    <GridColumn TItem="Sede" HeaderText="Descrizione Sede" PropertyName="DescrizioneSede">
+        @context.DescrizioneSede
+    </GridColumn>
+    <GridColumn TItem="Sede" HeaderText="Indirizzo" PropertyName="Indirizzo">
+        @context.Indirizzo
+    </GridColumn>
+    <GridColumn TItem="Sede" HeaderText="NCivico" PropertyName="NCivico">
+        @context.NCivico
+    </GridColumn>
+    <GridColumn TItem="Sede" HeaderText="Scala" PropertyName="Scala">
+        @context.Scala
+    </GridColumn>
+    <GridColumn TItem="Sede" HeaderText="Cap" PropertyName="Cap">
+        @context.Cap
+    </GridColumn>
+    <GridColumn TItem="Sede" HeaderText="Provincia" PropertyName="Provincia">
+        @context.Provincia
+    </GridColumn>
+    <GridColumn TItem="Sede" HeaderText="Citta" PropertyName="Citta">
+        @context.Citta
+    </GridColumn>
+    <GridColumn TItem="Sede" HeaderText="RecapitoTel" PropertyName="RecapitoTel">
+        @context.RecapitoTel
+    </GridColumn>
+    <GridColumn TItem="Sede" Filterable="false" HeaderText="Elimina">
+        <Button Color="ButtonColor.Danger" @onclick="() => DeleteSede(context.Id)"> Elimina </Button>
+    </GridColumn>
+    <GridColumn TItem="Sede" Filterable="false" HeaderText="Modifica">
+        <Button Color="ButtonColor.Success" @onclick="() => ShowModalUpdate(context.Id,context)"> Modifica </Button>
+    </GridColumn>
+
+</Grid>
+
+<Modal @ref="_modal" Title="Sede" >
+
+    <BodyTemplate >
+        @if (!_updateModal)
+        {
+            <EditForm Model="_updateSede" >
+                <div>
+                    <label>
+                        Modifica Descrizione:
+                        <InputText @bind-Value="_updateSede.DescrizioneSede" class="Centratura"></InputText>
+                    </label>
+                </div>
+
+                <div>
+                    <labelb>
+                        Indirizzo:
+                        <InputText @bind-Value="_updateSede.Indirizzo"></InputText>
+                    </labelb>
+                </div>
+                <div>
+                    <label>
+                        Numero Civico:
+                        <InputNumber @bind-Value="_updateSede.NCivico"></InputNumber>
+                    </label>
+                </div>
+                <div>
+                    <label>
+                        Scala:
+                        <InputText @bind-Value="_updateSede.Scala"></InputText>
+                    </label>
+                </div>
+                <div>
+                    <label>
+                        Cap:
+                        <InputText @bind-Value="_updateSede.Cap"></InputText>
+                    </label>
+                </div>
+                <div>
+                    <label>
+                        Provincia:
+                        <InputText @bind-Value="_updateSede.Provincia"></InputText>
+                    </label>
+                </div>
+                <div>
+                    <label>
+                        Citta:
+                        <InputText @bind-Value="_updateSede.Citta"></InputText>
+                    </label>
+                </div>
+                <div>
+                    <label>
+                        Recapito Telefonico:
+                        <InputText @bind-Value="_updateSede.RecapitoTel"></InputText>
+                    </label>
+                </div>
+            </EditForm>
+        }
+        else
+        {
+            <EditForm Model="_newSede">
+
+                <div>
+                    <label>
+                        Descrizione Sede:
+                        <InputText @bind-Value="_newSede.DescrizioneSede"></InputText>
+                    </label>
+                </div>
+                <div>
+                    <label>
+                        Indirizzo:
+                        <InputText @bind-Value="_newSede!.Indirizzo"></InputText>
+                    </label>
+                </div>
+                <div>
+                    <label>
+                        Numero Civico:
+                        <InputNumber @bind-Value="_newSede!.NCivico"></InputNumber>
+                    </label>
+                </div>
+                <div>
+                    <label>
+                        Scala:
+                        <InputText @bind-Value="_newSede!.Scala"></InputText>
+                    </label>
+                </div>
+                <div>
+                    <label>
+                        Cap:
+                        <InputText @bind-Value="_newSede!.Cap"></InputText>
+                    </label>
+                </div>
+                <div>
+                    <label>
+                        Provincia:
+                        <InputText @bind-Value="_newSede!.Provincia"></InputText>
+                    </label>
+                </div>
+                <div>
+                    <label>
+                        Citta:
+                        <InputText @bind-Value="_newSede!.Citta"></InputText>
+                    </label>
+                </div>
+                <div>
+                    <label>
+                        RecapitoTel:
+                        <InputText @bind-Value="_newSede!.RecapitoTel"></InputText>
+                    </label>
+                </div>
+                <div>
+                    <label>
+                        Referente:
+                        <select class="form-select" aria-label="Default select example">
+                            @foreach (var referente in _referentiList)
+                            {
+                                <option value="@_referenteScelto">@referente.Nome @referente.Cognome</option>
+                            }
+
+                        </select>
+                        
+                    </label>
+                </div>
+            </EditForm>
+        }
+
+    </BodyTemplate>
+    <FooterTemplate>
+        @if (!_updateModal)
+        {
+            <Button Color="ButtonColor.Secondary" @onclick="OnHideModalClick">Chiudi</Button>
+            <Button Color="ButtonColor.Warning" @onclick="() => UpdateSede(_updateSede.Id)"> Modifica </Button>
+
+        }
+        else
+        {
+            <Button Color="ButtonColor.Secondary" @onclick="OnHideModalClick">Chiudi</Button>
+            <Button Color="ButtonColor.Success" @onclick="AddNew">Aggiungi</Button>
+        }
+
+    </FooterTemplate>
+</Modal>
+<div>
+    <Button Color="ButtonColor.Primary" @onclick="OnShowModalClick"> Aggiungi Nuovo </Button>
+</div>
+@code {
+    Grid<Sede>? _grid;
+    private IEnumerable<Sede>? _sedi;
+    private Modal _modal = new();
+    private bool _updateModal = false;
+    private Sede _newSede { get; set; } = new();
+    private Sede _updateSede { get; set; } = new();
+    private List<Referente> _referentiList = new();
+    private Referente _referenteScelto { get; set; }=null!;
+    
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        await GetSedi();
+        await GetReferenti();
+
+    }
+
+    private async Task GetReferenti()
+    {
+      _referentiList =  (await Http.GetFromJsonAsync<List<Referente>>("api/Referente"))!;
+    }
+
+    private async Task OnShowModalClick()
+    {
+        _updateModal = true;
+        await _modal.ShowAsync();
+    }
+
+    private async Task OnHideModalClick()
+    {
+        _updateModal = false;
+        await _modal.HideAsync();
+
+    }
+
+    private async Task AddNew()
+    {
+        if (_newSede!.DescrizioneSede != null!)
+        {
+            await Http.PostAsJsonAsync("api/Sede/Create", _newSede);
+            await _grid!.RefreshDataAsync();
+            await OnHideModalClick();
+        }
+    }
+
+    private async Task<GridDataProviderResult<Sede>> SediDataProvider(GridDataProviderRequest<Sede> request)
+    {
+        // if (_benefits is null)
+        _sedi = await GetSedi();
+        return await Task.FromResult(request.ApplyTo(_sedi));
+    }
+
+    private async Task DeleteSede(Guid id)
+    {
+        await Http.DeleteAsync($"api/Sede/{id}");
+        await _grid!.RefreshDataAsync();
+    }
+
+    private async Task ShowModalUpdate(Guid id, Sede contextSede)
+    {
+        await _modal.ShowAsync();
+        await Http.GetFromJsonAsync<Sede>($"api/Sede/{id}");
+        _updateSede.Id = id;
+        _updateSede.DescrizioneSede = contextSede.DescrizioneSede;
+        _updateSede.Indirizzo = contextSede.Indirizzo;
+        _updateSede.NCivico = contextSede.NCivico;
+        _updateSede.Scala = contextSede.Scala;
+        _updateSede.Cap = contextSede.Cap;
+        _updateSede.Provincia = contextSede.Provincia;
+        _updateSede.Citta = contextSede.Citta;
+        _updateSede.RecapitoTel = contextSede.RecapitoTel;
+
+
+    }
+
+    private async Task UpdateSede(Guid id)
+    {
+        await Http.PutAsJsonAsync($"api/Sede/{id}", _updateSede);
+        await _grid!.RefreshDataAsync();
+        await _modal.HideAsync();
+    }
+
+    private async Task<IEnumerable<Sede>> GetSedi()
+    {
+        var result = await Http.GetFromJsonAsync<IEnumerable<Sede>>("api/Sede");
+        return result!;
+    }
+}
