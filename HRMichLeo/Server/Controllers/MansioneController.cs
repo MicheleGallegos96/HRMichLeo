@@ -31,7 +31,7 @@ namespace HRMichLeo.Server.Controllers
             return Ok(risultato);
         }
 
-        [HttpPost("{id:guid}")]
+        [HttpPost("Create")]
 
         public async Task<ActionResult<Mansione>> Post(Mansione mansioni)
         {

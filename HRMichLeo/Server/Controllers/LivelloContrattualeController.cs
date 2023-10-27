@@ -4,7 +4,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace HRMichLeo.Server.Controllers
 {
-    public class LivelloContrattualeController : Controller
+    [Route("api/[controller]")]
+    [ApiController]
+    public class LivelloContrattualeController : ControllerBase
     {
         
         private readonly IRepositoryBase<LivelloContrattuale> _livelloContrattualeRepository;
