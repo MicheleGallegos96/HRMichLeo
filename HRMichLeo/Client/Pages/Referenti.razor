@@ -48,72 +48,75 @@
         @if (!_updateModal)
         {
             <EditForm Model="_updateReferente">
-                <div>
-                    <label>
-                        Nome:
-                        <InputText @bind-Value="_updateReferente.Nome"></InputText>
-                    </label>
-                </div>
+                <div class="container">
+                    <div class="row ">
+                        <label class="col-4">
+                            Nome:
+                        </label>
+                        <InputText class="col-8" @bind-Value="_updateReferente.Nome"></InputText>
+                    </div>
 
-                <div>
-                    <label>
-                        Cognome:
-                        <InputText @bind-Value="_updateReferente.Cognome"></InputText>
-                    </label>
-                </div>
-                <div>
-                    <label>
-                        CF:
-                        <InputText @bind-Value="_updateReferente.CF"></InputText>
-                    </label>
-                </div>
-                <div>
-                    <label>
-                        RecapitoTel:
-                        <InputText @bind-Value="_updateReferente.RecapitoTel"></InputText>
-                    </label>
-                </div>
-                <div>
-                    <label>
-                        Email:
-                        <InputText @bind-Value="_updateReferente.Email"></InputText>
-                    </label>
+                    <div>
+                        <label>
+                            Cognome:
+                            <InputText @bind-Value="_updateReferente.Cognome"></InputText>
+                        </label>
+                    </div>
+                    <div>
+                        <label>
+                            CF:
+                            <InputText @bind-Value="_updateReferente.CF"></InputText>
+                        </label>
+                    </div>
+                    <div>
+                        <label>
+                            RecapitoTel:
+                            <InputText @bind-Value="_updateReferente.RecapitoTel"></InputText>
+                        </label>
+                    </div>
+                    <div>
+                        <label>
+                            Email:
+                            <InputText @bind-Value="_updateReferente.Email"></InputText>
+                        </label>
+                    </div>
                 </div>
             </EditForm>
         }
         else
         {
             <EditForm Model="_newReferente">
-
-                <div>
-                    <label>
-                        Nome:
-                        <InputText @bind-Value="_newReferente.Nome"></InputText>
-                    </label>
-                </div>
-                <div>
-                    <label>
-                        Cognome:
-                        <InputText @bind-Value="_newReferente.Cognome"></InputText>
-                    </label>
-                </div>
-                <div>
-                    <label>
-                        CF:
-                        <InputText @bind-Value="_newReferente.CF"></InputText>
-                    </label>
-                </div>
-                <div>
-                    <label>
-                        RecapitoTel:
-                        <InputText @bind-Value="_newReferente.RecapitoTel"></InputText>
-                    </label>
-                </div>
-                <div>
-                    <label>
-                        Email:
-                        <InputText @bind-Value="_newReferente.Email"></InputText>
-                    </label>
+                <div class="container">
+                    <div class="row ">
+                        <label class="col-3">
+                            Nome:
+                        </label>
+                        <InputText class="col-7" @bind-Value="_newReferente.Nome"></InputText>
+                    </div>
+                    <div class="row">
+                        <label class="col-3">
+                            Cognome:
+                        </label>
+                            <InputText class="col-7" @bind-Value="_newReferente.Cognome"></InputText>
+                    </div>
+                    <div class="row">
+                        <label class="col-3">
+                            CF:
+                        </label>
+                            <InputText class="col-7" @bind-Value="_newReferente.CF"></InputText>
+                    </div>
+                    <div class="row">
+                        <label class="col-3">
+                            RecapitoTel:
+                        </label>
+                            <InputText class="col-7" @bind-Value="_newReferente.RecapitoTel"></InputText>
+                    </div>
+                    <div class="row">
+                        <label class="col-3">
+                            Email:
+                        </label>
+                        <InputText class="col-7" @bind-Value="_newReferente.Email"></InputText>
+                    </div>
                 </div>
             </EditForm>
         }
