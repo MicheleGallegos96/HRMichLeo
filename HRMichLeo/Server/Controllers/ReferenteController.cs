@@ -24,7 +24,7 @@ namespace HRMichLeo.Server.Controllers
             return Ok(risultato);
         }
 
-        [HttpGet("{Id}")]
+        [HttpGet("{Id:guid}")]
         public async Task<ActionResult<Referente>> GetById(Guid id)
         {
             var risultato = await _referenteRepository.GetById(id);
@@ -49,7 +49,7 @@ namespace HRMichLeo.Server.Controllers
 
         }
 
-        [HttpPut("{Id}")]
+        [HttpPut("{Id:guid}")]
 
         public async Task<ActionResult<Referente>> Put(Guid id, Referente referenti)
         {
@@ -61,6 +61,11 @@ namespace HRMichLeo.Server.Controllers
             return Ok(referenti);
 
         }
-
+        [HttpGet("{id:guid}")]
+        public async Task<ActionResult<Sede>> GetByIdSede(Guid id)
+        {
+            var risultato = await _referenteRepository.GetById(id);
+            return Ok(risultato);
+        }
     }
 }

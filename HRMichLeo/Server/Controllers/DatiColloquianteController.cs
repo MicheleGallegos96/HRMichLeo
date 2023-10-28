@@ -24,7 +24,7 @@ namespace HRMichLeo.Server.Controllers
             return Ok(risultato);
         }
 
-        [HttpGet("Id")]
+        [HttpGet("{id:guid}")]
         public async Task<ActionResult<DatiColloquiante>> GetById(Guid id)
         {
             var risultato = await _datiColloquianteRepository.GetById(id);
@@ -40,7 +40,7 @@ namespace HRMichLeo.Server.Controllers
 
         }
 
-        [HttpDelete("Delete")]
+        [HttpDelete("{id:guid}")]
 
         public async Task<ActionResult<DatiColloquiante>> Delete(Guid id)
         {
@@ -49,7 +49,7 @@ namespace HRMichLeo.Server.Controllers
 
         }
 
-        [HttpPut("Id")]
+        [HttpPut("{id:guid}")]
 
         public async Task<ActionResult<DatiColloquiante>> Put(Guid id, DatiColloquiante datiColloquiante)
         {

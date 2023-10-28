@@ -34,7 +34,7 @@ namespace HRMichLeo.Server.Migrations
 
                     b.HasIndex("TipologiaContrattiId");
 
-                    b.ToTable("BenefitTipologiaContratto");
+                    b.ToTable("BenefitTipologiaContratto", (string)null);
                 });
 
             modelBuilder.Entity("DatiColloquianteHardSkill", b =>
@@ -49,7 +49,7 @@ namespace HRMichLeo.Server.Migrations
 
                     b.HasIndex("HardSkillsId");
 
-                    b.ToTable("DatiColloquianteHardSkill");
+                    b.ToTable("DatiColloquianteHardSkill", (string)null);
                 });
 
             modelBuilder.Entity("DatiColloquianteSoftSkill", b =>
@@ -64,7 +64,7 @@ namespace HRMichLeo.Server.Migrations
 
                     b.HasIndex("SoftSkillsId");
 
-                    b.ToTable("DatiColloquianteSoftSkill");
+                    b.ToTable("DatiColloquianteSoftSkill", (string)null);
                 });
 
             modelBuilder.Entity("HRMichLeo.Shared.Models.Benefit", b =>
@@ -82,7 +82,7 @@ namespace HRMichLeo.Server.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Benefits");
+                    b.ToTable("Benefits", (string)null);
                 });
 
             modelBuilder.Entity("HRMichLeo.Shared.Models.DatiColloquiante", b =>
@@ -141,7 +141,7 @@ namespace HRMichLeo.Server.Migrations
 
                     b.HasIndex("TitoloStudioId");
 
-                    b.ToTable("DatiColloquianti");
+                    b.ToTable("DatiColloquianti", (string)null);
                 });
 
             modelBuilder.Entity("HRMichLeo.Shared.Models.EsperienzaLavorativa", b =>
@@ -174,7 +174,7 @@ namespace HRMichLeo.Server.Migrations
 
                     b.HasIndex("MansioneId");
 
-                    b.ToTable("EsperienzeLavorative");
+                    b.ToTable("EsperienzeLavorative", (string)null);
                 });
 
             modelBuilder.Entity("HRMichLeo.Shared.Models.HardSkill", b =>
@@ -192,7 +192,7 @@ namespace HRMichLeo.Server.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("HardSkills");
+                    b.ToTable("HardSkills", (string)null);
                 });
 
             modelBuilder.Entity("HRMichLeo.Shared.Models.LivelloContrattuale", b =>
@@ -210,7 +210,7 @@ namespace HRMichLeo.Server.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("LivelliContrattuali");
+                    b.ToTable("LivelliContrattuali", (string)null);
                 });
 
             modelBuilder.Entity("HRMichLeo.Shared.Models.Mansione", b =>
@@ -228,7 +228,7 @@ namespace HRMichLeo.Server.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Mansioni");
+                    b.ToTable("Mansioni", (string)null);
                 });
 
             modelBuilder.Entity("HRMichLeo.Shared.Models.Referente", b =>
@@ -262,7 +262,7 @@ namespace HRMichLeo.Server.Migrations
 
                     b.HasIndex("SedeReferenteId");
 
-                    b.ToTable("Referenti");
+                    b.ToTable("Referenti", (string)null);
                 });
 
             modelBuilder.Entity("HRMichLeo.Shared.Models.Sede", b =>
@@ -298,7 +298,7 @@ namespace HRMichLeo.Server.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Sedi");
+                    b.ToTable("Sedi", (string)null);
                 });
 
             modelBuilder.Entity("HRMichLeo.Shared.Models.SoftSkill", b =>
@@ -316,7 +316,7 @@ namespace HRMichLeo.Server.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("SoftSkills");
+                    b.ToTable("SoftSkills", (string)null);
                 });
 
             modelBuilder.Entity("HRMichLeo.Shared.Models.TipologiaColloquio", b =>
@@ -358,7 +358,7 @@ namespace HRMichLeo.Server.Migrations
 
                     b.HasIndex("SedeColloquioId");
 
-                    b.ToTable("TipologieColloquio");
+                    b.ToTable("TipologieColloquio", (string)null);
                 });
 
             modelBuilder.Entity("HRMichLeo.Shared.Models.TipologiaContratto", b =>
@@ -386,7 +386,7 @@ namespace HRMichLeo.Server.Migrations
 
                     b.HasIndex("LivelloContrattoId");
 
-                    b.ToTable("TipologieContratti");
+                    b.ToTable("TipologieContratti", (string)null);
                 });
 
             modelBuilder.Entity("HRMichLeo.Shared.Models.TipologiaDocumento", b =>
@@ -404,7 +404,7 @@ namespace HRMichLeo.Server.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("TipologieDocumenti");
+                    b.ToTable("TipologieDocumenti", (string)null);
                 });
 
             modelBuilder.Entity("HRMichLeo.Shared.Models.TitoloDiStudio", b =>
@@ -422,7 +422,7 @@ namespace HRMichLeo.Server.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("TitoliDiStudio");
+                    b.ToTable("TitoliDiStudio", (string)null);
                 });
 
             modelBuilder.Entity("BenefitTipologiaContratto", b =>
