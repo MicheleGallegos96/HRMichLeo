@@ -61,11 +61,6 @@ namespace HRMichLeo.Server.Controllers
             return Ok(referenti);
 
         }
-        [HttpGet("{id:guid}")]
-        public async Task<ActionResult<Sede>> GetByIdSede(Guid id)
-        {
-            var risultato = await _referenteRepository.GetById(id);
-            return Ok(risultato);
-        }
+
     }
 }

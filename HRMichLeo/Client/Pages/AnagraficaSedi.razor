@@ -247,10 +247,11 @@
             var tuttoReferente = await Http.GetFromJsonAsync<Referente>($"api/Referente/{_referenteScelto.Id}");
             // _newSede.Referenti.Add(tuttoReferente);
             var nuovaSede = await Http.PostAsJsonAsync("api/Sede/Create", _newSede);
-            tuttoReferente!.SedeReferente = nuovaSede.Content.ReadFromJsonAsync<Sede>().Result;
+            tuttoReferente.SedeReferente = nuovaSede.Content.ReadFromJsonAsync<Sede>().Result;
             await Http.PutAsJsonAsync($"api/Referente/{tuttoReferente.Id}",tuttoReferente);
             await _grid!.RefreshDataAsync();
             await OnHideModalClick();
+
         }
     }
 
