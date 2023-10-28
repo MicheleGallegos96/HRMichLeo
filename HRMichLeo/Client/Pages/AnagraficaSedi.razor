@@ -111,54 +111,54 @@
         else
         {
             <EditForm Model="_newSede">
-
-                <div>
-                    <label>
+                <div class="container">
+                <div class="row">
+                    <label class="col-5">
                         Descrizione Sede:
-                        <InputText @bind-Value="_newSede.DescrizioneSede"></InputText>
                     </label>
+                        <InputText class="col-6" @bind-Value="_newSede.DescrizioneSede"></InputText>
                 </div>
-                <div>
-                    <label>
+                    <div class="row">
+                        <label class="col-5">
                         Indirizzo:
-                        <InputText @bind-Value="_newSede!.Indirizzo"></InputText>
                     </label>
+                        <InputText class="col-6" @bind-Value="_newSede!.Indirizzo"></InputText>
                 </div>
-                <div>
-                    <label>
+                <div class="row">
+                    <label class="col-5">
                         Numero Civico:
-                        <InputNumber @bind-Value="_newSede!.NCivico"></InputNumber>
                     </label>
+                        <InputNumber class="col-6" @bind-Value="_newSede!.NCivico"></InputNumber>
                 </div>
-                <div>
-                    <label>
+                <div class="row">
+                    <label class="col-5">
                         Scala:
-                        <InputText @bind-Value="_newSede!.Scala"></InputText>
                     </label>
+                        <InputText class="col-6" @bind-Value="_newSede!.Scala"></InputText>
                 </div>
-                <div>
-                    <label>
+                <div class="row">
+                    <label class="col-5">
                         Cap:
-                        <InputText @bind-Value="_newSede!.Cap"></InputText>
                     </label>
+                        <InputText class="col-6" @bind-Value="_newSede!.Cap"></InputText>
                 </div>
-                <div>
-                    <label>
+                    <div class="row">
+                        <label class="col-5">
                         Provincia:
-                        <InputText @bind-Value="_newSede!.Provincia"></InputText>
                     </label>
+                        <InputText class="col-6" @bind-Value="_newSede!.Provincia"></InputText>
                 </div>
-                <div>
-                    <label>
+                    <div class="row">
+                        <label class="col-5">
                         Citta:
-                        <InputText @bind-Value="_newSede!.Citta"></InputText>
                     </label>
+                        <InputText class="col-6" @bind-Value="_newSede!.Citta"></InputText>
                 </div>
-                <div>
-                    <label>
+                    <div class="row">
+                        <label class="col-5">
                         RecapitoTel:
-                        <InputText @bind-Value="_newSede!.RecapitoTel"></InputText>
                     </label>
+                        <InputText class="col-6" @bind-Value="_newSede!.RecapitoTel"></InputText>
                 </div>
                 <div>
                     <label>
@@ -172,6 +172,7 @@
                         </select>
                         
                     </label>
+                </div>
                 </div>
             </EditForm>
         }
