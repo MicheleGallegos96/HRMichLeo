@@ -14,6 +14,7 @@ namespace HRMichLeo.Shared.Models
         public string CF { get; set; } = null!;
         public string? RecapitoTel { get; set; } 
         public string? Email { get; set; } 
+        //public Guid? SedeId { get; set; }
         public Sede? SedeReferente { get; set; }
         public virtual ICollection<TipologiaColloquio> Colloqui { get; set; } = new List <TipologiaColloquio>();
     }

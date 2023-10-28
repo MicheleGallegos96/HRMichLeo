@@ -45,8 +45,12 @@ namespace HRMichLeo.Server.Data
             //    entity.HasOne(a => a.Colloquiante)
             //        .WithOne(a => a.Documento)
             //        .HasForeignKey<TipologiaDocumento>(a => a.Id);
-
             //});
+
+            modelBuilder.Entity<Sede>()
+                .HasMany(r => r.Referenti)
+                .WithOne(s => s.SedeReferente)
+                .HasForeignKey(f => f.Id);
         }
     }
 }

@@ -42,6 +42,15 @@
     <GridColumn TItem="Sede" HeaderText="RecapitoTel" PropertyName="RecapitoTel">
         @context.RecapitoTel
     </GridColumn>
+    <GridColumn TItem="Sede" HeaderText="Referenti" PropertyName="Referenti">
+        @{
+            string s = "";
+            foreach (var referente in context.Referenti)
+            {
+                s += referente.Nome + referente.Cognome + " \n";
+            }
+        }
+    </GridColumn>
     <GridColumn TItem="Sede" Filterable="false" HeaderText="Elimina">
         <Button Color="ButtonColor.Danger" @onclick="() => DeleteSede(context.Id)"> Elimina </Button>
     </GridColumn>
@@ -51,12 +60,12 @@
 
 </Grid>
 
-<Modal @ref="_modal" Title="Sede" >
+<Modal @ref="_modal" Title="Sede">
 
-    <BodyTemplate >
+    <BodyTemplate>
         @if (!_updateModal)
         {
-            <EditForm Model="_updateSede" >
+            <EditForm Model="_updateSede">
                 <div>
                     <label>
                         Modifica Descrizione:
@@ -163,14 +172,14 @@
                 <div>
                     <label>
                         Referente:
-                        <select class="form-select" aria-label="Default select example">
+                        <select class="form-select" aria-label="Default select example" @bind="_referenteScelto.Id">
                             @foreach (var referente in _referentiList)
                             {
-                                <option value="@_referenteScelto">@referente.Nome @referente.Cognome</option>
+                                <option value="@referente.Id">@referente.Nome @referente.Cognome</option>
                             }
 
                         </select>
-                        
+
                     </label>
                 </div>
             </EditForm>
@@ -203,8 +212,8 @@
     private Sede _newSede { get; set; } = new();
     private Sede _updateSede { get; set; } = new();
     private List<Referente> _referentiList = new();
-    private Referente _referenteScelto { get; set; }=null!;
-    
+    private Referente _referenteScelto { get; set; } = new();
+
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
@@ -215,7 +224,7 @@
 
     private async Task GetReferenti()
     {
-      _referentiList =  (await Http.GetFromJsonAsync<List<Referente>>("api/Referente"))!;
+        _referentiList = (await Http.GetFromJsonAsync<List<Referente>>("api/Referente"))!;
     }
 
     private async Task OnShowModalClick()
@@ -235,7 +244,11 @@
     {
         if (_newSede!.DescrizioneSede != null!)
         {
-            await Http.PostAsJsonAsync("api/Sede/Create", _newSede);
+            var tuttoReferente = await Http.GetFromJsonAsync<Referente>($"api/Referente/{_referenteScelto.Id}");
+            // _newSede.Referenti.Add(tuttoReferente);
+            var nuovaSede = await Http.PostAsJsonAsync("api/Sede/Create", _newSede);
+            tuttoReferente!.SedeReferente = nuovaSede.Content.ReadFromJsonAsync<Sede>().Result;
+            await Http.PutAsJsonAsync($"api/Referente/{tuttoReferente.Id}",tuttoReferente);
             await _grid!.RefreshDataAsync();
             await OnHideModalClick();
         }
